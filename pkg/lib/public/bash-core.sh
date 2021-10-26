@@ -129,7 +129,6 @@ core.shopt_push() {
 		return 1
 	fi
 
-
 	if (( previous_shopt_errcode == 0)); then
 		___global_shopt_stack___+=(-s "$shopt_name")
 	else
@@ -169,5 +168,6 @@ core.shopt_pop() {
 		printf '%s\n' "Fatal: core.shopt_pop: Could not restore previous option" >&2
 		return $errcode
 	fi
+
 	___global_shopt_stack___=("${___global_shopt_stack___[@]::${#___global_shopt_stack___[@]}-2}")
 }
