@@ -1,7 +1,14 @@
 # shellcheck shell=bash
 
-declare -Ag ___global_trap_table___=()
-declare -ag ___global_shopt_stack___=()
+core.init() {
+	if [ ${___global_bash_core_has_init__+x} ]; then
+		return
+	fi
+
+	___global_bash_core_has_init__=
+	declare -Ag ___global_trap_table___=()
+	declare -ag ___global_shopt_stack___=()
+}
 
 # @description Get version of the package, from the point of the
 # callsite. In other words, it returns the version of the package
