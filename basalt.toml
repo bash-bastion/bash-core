@@ -1,0 +1,20 @@
+[package]
+name = 'bash-core'
+slug = 'core'
+version = ''
+authors = ['Edwin Kofler <edwin@kofler.dev>']
+description = 'Core lightweight functions that any Bash programmer will love'
+
+[run]
+dependencies = ['https://github.com/hyperupcall/bats-all.git@v4.1.0']
+sourceDirs = ['./pkg/lib/public']
+builtinDirs = []
+binDirs = []
+completionDirs = []
+manDirs = []
+
+[run.shellEnvironment]
+
+[run.setOptions]
+
+[run.shoptOptions]
