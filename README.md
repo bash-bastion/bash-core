@@ -12,7 +12,6 @@ Added functions: `core.trap_add` (not working), `core.trap_remove` `core.shopt_p
 
 Use [Basalt](https://github.com/hyperupcall/basalt), a Bash package manager, to add this project as a dependency
 
-
 ```sh
 basalt add hyperupcall/bash-core
 ```

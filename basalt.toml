@@ -7,7 +7,7 @@ description = 'Core lightweight functions that any Bash programmer will love'
 
 [run]
 dependencies = ['https://github.com/hyperupcall/bats-all.git@v4.1.0']
-sourceDirs = ['./pkg/lib/public']
+sourceDirs = ['pkg/lib/public', 'pkg/lib/util']
 builtinDirs = []
 binDirs = []
 completionDirs = []

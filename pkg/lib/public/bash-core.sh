@@ -1,6 +1,8 @@
 # shellcheck shell=bash
 
 core.init() {
+	# TODO: way below should error if any variables are not set
+
 	if [ ${___global_bash_core_has_init__+x} ]; then
 		return
 	fi
@@ -10,10 +12,9 @@ core.init() {
 	declare -ag ___global_shopt_stack___=()
 }
 
-# @description Get version of the package, from the point of the
-# callsite. In other words, it returns the version of the package
-# that has the file containing the direct caller of this function
-# @set REPLY The full path to the directory
+# @description Get version of the package, from the point of the callsite. In other words, it
+# returns the version of the package that has the file containing the direct caller of this
+# function @set REPLY The full path to the directory
 core.get_package_dir() {
 	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
 
@@ -30,13 +31,20 @@ core.trap_add() {
 	local signal_spec="$2"
 
 	# validation
+	if [ -z "$function" ]; then
+		printf '%s\n' "Error: core.trap_add: First argument cannot be empty"
+		return 1
+	fi
+	if [ -z "$signal_spec" ]; then
+		printf '%s\n' "Error: core.trap_add: Second argument cannot be empty"
+		return 1
+	fi
 	local regex='^[0-9]+$'
 	if [[ "$signal_spec" =~ $regex ]]; then
 		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
 		return 1
 	fi; unset regex
 	signal_spec="${signal_spec#SIG}"
-
 	if ! declare -f "$function" &>/dev/null; then
 		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
 		return 1
@@ -46,21 +54,14 @@ core.trap_add() {
 	___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
 
 	local global_trap_handler_name=
-	printf -v global_trap_handler_name '%q' "__global_trap_${signal_spec}_handler___"
+	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
 
-	eval 'if ! '"$global_trap_handler_name"'() {
-		local trap_handlers= trap_handler=
-		IFS=$'"'\x1C'"' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
-		for trap_func in "${trap_handlers[@]}"; do
-			if declare -f "$trap_handler"; then
-				:
-			else
-				printf "%s\n" "Warn: core.trap_add: Function '"'\$function'"' registered for signal '"'\$signal_spec'"' no longer exists" >&2
-			fi
-		done
-	}; then
-		false
-	fi'
+	if ! eval "$global_trap_handler_name() {
+	core.trap_common_global_handler "$signal_spec"
+}"; then
+		printf '%s\n' "Error: core.trap_add: Could not eval function"
+		return 1
+	fi
 	trap "$global_trap_handler_name" "$signal_spec"
 }
 
@@ -69,13 +70,20 @@ core.trap_remove() {
 	local signal_spec="$2"
 
 	# validation
+	if [ -z "$function" ]; then
+		printf '%s\n' "Error: core.trap_add: First argument cannot be empty"
+		return 1
+	fi
+	if [ -z "$signal_spec" ]; then
+		printf '%s\n' "Error: core.trap_add: Second argument cannot be empty"
+		return 1
+	fi
 	local regex='^[0-9]+$'
 	if [[ "$signal_spec" =~ $regex ]]; then
 		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
 		return 1
 	fi; unset regex
 	signal_spec="${signal_spec#SIG}"
-
 	if ! declare -f "$function" &>/dev/null; then
 		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
 		return 1
