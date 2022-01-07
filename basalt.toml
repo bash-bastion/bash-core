@@ -1,7 +1,7 @@
 [package]
 name = 'bash-core'
 slug = 'core'
-version = '0.1.1'
+version = '0.2.0'
 authors = ['Edwin Kofler <edwin@kofler.dev>']
 description = 'Core lightweight functions that any Bash programmer will love'
 
