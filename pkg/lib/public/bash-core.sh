@@ -186,3 +186,25 @@ core.shopt_pop() {
 
 	___global_shopt_stack___=("${___global_shopt_stack___[@]::${#___global_shopt_stack___[@]}-2}")
 }
+
+# Variables not checked: 'MAKE_TERMOUT', 'MAKE_TERMERR'
+
+# TODO: 'COLORTERM'
+core.should_color_output() {
+	# https://no-color.org
+	if [[ -v NO_COLOR ]]; then
+		return 1
+	fi
+
+	# 0 => 2 colors
+	# 1 => 16 colors
+	# 2 => 256 colors
+	# 3 => 16,777,216 colors
+	if [[ -v FORCE_COLOR ]]; then
+		return 0
+	fi
+
+	if [[ $TERM == dumb ]]; then
+		return 0
+	fi
+}
