@@ -2,11 +2,9 @@
 
 Useful functions for any Bash program. Often vital for Basalt programs
 
-STATUS: BETA
-
 ## Summary
 
-Added functions: `core.trap_add` (not working), `core.trap_remove` `core.shopt_push`, and `core.shopt_pop`
+Added functions: `core.trap_add`, `core.trap_remove` `core.shopt_push`, and `core.shopt_pop`
 
 ## Installation
 
