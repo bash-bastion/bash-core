@@ -1,4 +1,4 @@
-# TODO: deprecate public/bash-error.sh
+# shellcheck shell=bash
 
 core.err_set() {
 	if (($# == 1)); then
