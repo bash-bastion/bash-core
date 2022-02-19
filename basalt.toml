@@ -1,4 +1,5 @@
 [package]
+type = 'bash'
 name = 'bash-core'
 slug = 'core'
 version = '0.2.0'
