@@ -1,8 +1,10 @@
 # bash-core
 
-Useful functions for any Bash program. Often vital for Basalt programs
+Core functions for any Bash program
 
 ## Summary
+
+The following are functions available for use. See the [api.md](./docs/api.md) for more details
 
 ### `init`
 
@@ -17,27 +19,10 @@ Add and remove traps. With these, multiple packages can add or remove traps hand
 - `core.trap_add`
 - `core.trap_remove`
 
-Example
-
-```sh
-some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
-core.trap_add 'some_handler' 'USR1'
-kill -USR1 $$
-core.trap_remove 'some_handler' 'USR1'
-```
-
 ### `shopt`
 
 - `core.shopt_push`
 - `core.shopt_pop`
-
-Example
-
-```sh
-core.shopt_push -s extglob
-[[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
-core.shopt_pop
-```
 
 ### `err`
 
@@ -47,22 +32,11 @@ I suppose it can look redundant (compared to `if ! fn; then :; fi`), but it can 
 - `core.err_clear`
 - `core.err_exists`
 
-## `stacktrace`
+### `stacktrace`
 
 Prints the stack trace. Recommended to use with `core.trap_add`
 
 - `core.stacktrace_print`
-
-Example
-
-```sh
-create_some_error() { core.err_clear; core.err_set 'Some error' }
-
-create_some_error || fatal "Did not expect an error"
-if core.err_exists; then
-  printf '%s\n' 'Something happened'
-fi
-```
 
 ## Installation
 

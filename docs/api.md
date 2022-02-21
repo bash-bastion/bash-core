@@ -2,7 +2,7 @@
 
 ## Overview
 
-Core functions for any large Bash program
+Core functions for any Bash program
 
 ## Index
 
@@ -99,8 +99,8 @@ Sets an error.
 
 #### Arguments
 
-* # @args $1 Error code
-* # @args $2 Error message
+* **$1** (Error): code
+* **$2** (Error): message
 
 #### Variables set
 

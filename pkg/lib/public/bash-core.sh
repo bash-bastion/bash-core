@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 # @name bash-core
-# @description Core functions for any large Bash program
+# @description Core functions for any Bash program
 
 # @description Initiates global variables used by other functions
 # @noargs
@@ -15,21 +15,6 @@ core.init() {
 	___global_bash_core_has_init__=
 	declare -Ag ___global_trap_table___=()
 	declare -ag ___global_shopt_stack___=()
-}
-
-# @description Get version of the package, from the point of the callsite. In other words, it
-# returns the version of the package that has the file containing the direct caller of this
-# @set REPLY The full path to the directory
-# @internal
-core.get_package_dir() {
-	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
-
-	# while [ ! -f 'basalt.toml' ] && [ "$PWD" != / ]; do
-	# 	if ! cd ..; then
-	# 		return 1
-	# 	fi
-	# done
-	:
 }
 
 # @description Adds a handler for a particular `trap` signal or event. Noticably,
@@ -214,6 +199,68 @@ core.shopt_pop() {
 	___global_shopt_stack___=("${___global_shopt_stack___[@]::${#___global_shopt_stack___[@]}-2}")
 }
 
+# @description Sets an error.
+# @arg $1 Error code
+# @arg $2 Error message
+# @set number ERRCODE Error code
+# @set string ERR Error message
+core.err_set() {
+	if (($# == 1)); then
+		ERRCODE=1
+		ERR=$1
+	elif (($# == 2)); then
+		ERRCODE=$1
+		ERR=$2
+	else
+		printf '%s\n' "Error: bash-error: Incorrect function arguments"
+		return 1
+	fi
+
+	if [ -z "$ERR" ]; then
+		printf '%s\n' "Error: bash-error: Argument for 'ERR' cannot be empty"
+		return 1
+	fi
+}
+
+# @description Clears any of the global error state (sets to empty string).
+# This means any `core.err_exists` calls after this _will_ return `true`
+# @noargs
+# @set number ERRCODE Error code
+# @set string ERR Error message
+core.err_clear() {
+	ERRCODE=
+	ERR=
+}
+
+# @description Checks if an error exists. If `ERR` is not empty, then an error
+# _does_ exist
+# @noargs
+core.err_exists() {
+	if [ -z "$ERR" ]; then
+		return 1
+	else
+		return 0
+	fi
+}
+
+# @description Prints stacktrace
+# @noargs
+# @example
+#  core.trap_add 'err_handler' EXIT
+#  err_handler() {
+#    local exit_code=$?
+#    core.stacktrace_print
+#    exit $?
+#  }
+core.stacktrace_print() {
+	printf '%s\n' 'Stacktrace:'
+
+	local i=
+	for ((i=0; i<${#FUNCNAME[@]}-1; ++i)); do
+		printf '%s\n' "  in ${FUNCNAME[$i]} (${BASH_SOURCE[$i]}:${BASH_LINENO[$i-1]})"
+	done; unset -v i
+} >&2
+
 # @description Determine if color should be printed
 # @internal
 core.should_color_output() {
@@ -235,4 +282,19 @@ core.should_color_output() {
 	if [[ $TERM == dumb ]]; then
 		return 0
 	fi
+}
+
+# @description Get version of the package, from the point of the callsite. In other words, it
+# returns the version of the package that has the file containing the direct caller of this
+# @set REPLY The full path to the directory
+# @internal
+core.get_package_dir() {
+	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
+
+	# while [ ! -f 'basalt.toml' ] && [ "$PWD" != / ]; do
+	# 	if ! cd ..; then
+	# 		return 1
+	# 	fi
+	# done
+	:
 }

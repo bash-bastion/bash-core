@@ -5,9 +5,5 @@ task.test() {
 }
 
 task.docs() {
-	shdoc > './docs/api.md' < <(
-		for f in ./pkg/lib/public/*.sh; do
-			cat "$f"
-		done
-	)
+	shdoc < './pkg/lib/public/bash-core.sh' > './docs/api.md'
 }
