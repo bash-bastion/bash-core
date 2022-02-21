@@ -1,5 +1,10 @@
 # shellcheck shell=bash
 
+# @description Sets an error.
+# @args $1 Error code
+# @args $2 Error message
+# @set number ERRCODE Error code
+# @set string ERR Error message
 core.err_set() {
 	if (($# == 1)); then
 		ERRCODE=1
@@ -18,11 +23,19 @@ core.err_set() {
 	fi
 }
 
+# @description Clears any of the global error state (sets to empty string).
+# This means any `core.err_exists` calls after this _will_ return `true`
+# @noargs
+# @set number ERRCODE Error code
+# @set string ERR Error message
 core.err_clear() {
 	ERRCODE=
 	ERR=
 }
 
+# @description Checks if an error exists. If `ERR` is not empty, then an error
+# _does_ exist
+# @noargs
 core.err_exists() {
 	if [ -z "$ERR" ]; then
 		return 1

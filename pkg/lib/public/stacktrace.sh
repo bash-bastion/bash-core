@@ -1,6 +1,14 @@
 # shellcheck shell=bash
 
 # @description Prints stacktrace
+# @noargs
+# @example
+#  core.trap_add 'err_handler' EXIT
+#  err_handler() {
+#    local exit_code=$?
+#    core.stacktrace_print
+#    exit $?
+#  }
 core.stacktrace_print() {
 	printf '%s\n' 'Stacktrace:'
 

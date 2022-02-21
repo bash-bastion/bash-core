@@ -1,5 +1,10 @@
 # shellcheck shell=bash
 
+# @name bash-core
+# @description Core functions for any large Bash program
+
+# @description Initiates global variables used by other functions
+# @noargs
 core.init() {
 	# TODO: way below should error if any variables are not set
 
@@ -14,7 +19,8 @@ core.init() {
 
 # @description Get version of the package, from the point of the callsite. In other words, it
 # returns the version of the package that has the file containing the direct caller of this
-# function @set REPLY The full path to the directory
+# @set REPLY The full path to the directory
+# @internal
 core.get_package_dir() {
 	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
 
@@ -26,6 +32,15 @@ core.get_package_dir() {
 	:
 }
 
+# @description Adds a handler for a particular `trap` signal or event. Noticably,
+# unlike the 'builtin' trap, this does not override any other existing handlers
+# @arg $1 string Function to execute on an event. Integers are forbiden
+# @arg $2 string Event signal
+# @example
+#   some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
+#   core.trap_add 'some_handler' 'USR1'
+#   kill -USR1 $$
+#   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
 	local function="$1"
 	local signal_spec="$2"
@@ -65,6 +80,15 @@ core.trap_add() {
 	trap "$global_trap_handler_name" "$signal_spec"
 }
 
+# @description Removes a handler for a particular `trap` signal or event. Currently,
+# if the function doest not exist, it prints an error
+# @arg $1 string Function to remove
+# @arg $2 string Signal that the function executed on
+# @example
+#   some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
+#   core.trap_add 'some_handler' 'USR1'
+#   kill -USR1 $$
+#   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
 	local function="$1"
 	local signal_spec="$2"
@@ -108,6 +132,15 @@ core.trap_remove() {
 	___global_trap_table___["$signal_spec"]="$new_trap_handlers"
 }
 
+# @description Modifies current shell options and pushes information to stack, so
+# it can later be easily undone. Note that it does not check to see if your Bash
+# version supports the
+# @arg $1 string Name of shopt action. Can either be `-u` or `-s`
+# @arg $2 string Name of shopt name
+# @example
+#   core.shopt_push -s extglob
+#   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
+#   core.shopt_pop
 core.shopt_push() {
 	local shopt_action="$1"
 	local shopt_name="$2"
@@ -151,19 +184,13 @@ core.shopt_push() {
 	fi
 }
 
-# shellcheck disable=SC2120
+# @description Modifies current shell options based on most recent item added to stack.
+# @noargs
+# @example
+#   core.shopt_push -s extglob
+#   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
+#   core.shopt_pop
 core.shopt_pop() {
-	# local repeat="$1"
-
-	# TODO: wait until supporting it since on error, may be hard to ensure proper state of the stack
-	# local regex='^[0-9]+$'
-	# if [ -n "$repeat" ] && [[ "$repeat" =~ $regex ]]; then
-	# 	for ((i=0; i<repeat; i++)); do
-	# 		core.shopt_pop
-	# 		return
-	# 	done; unset i
-	# fi; unset regex
-
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
 		printf '%s\n' "Error: core.shopt_pop: Unable to pop as nothing is in the shopt stack"
 		return 1
@@ -174,7 +201,7 @@ core.shopt_pop() {
 		return 1
 	fi
 
-	# Stack now guaranteed to have at least 2 elements
+	# Stack now guaranteed to have at least 2 elements (so the following accessors won't error)
 	local shopt_action="${___global_shopt_stack___[-2]}"
 	local shopt_name="${___global_shopt_stack___[-1]}"
 
@@ -187,10 +214,11 @@ core.shopt_pop() {
 	___global_shopt_stack___=("${___global_shopt_stack___[@]::${#___global_shopt_stack___[@]}-2}")
 }
 
-# Variables not checked: 'MAKE_TERMOUT', 'MAKE_TERMERR'
-
-# TODO: 'COLORTERM'
+# @description Determine if color should be printed
+# @internal
 core.should_color_output() {
+	# TODO: 'COLORTERM'
+
 	# https://no-color.org
 	if [[ -v NO_COLOR ]]; then
 		return 1
