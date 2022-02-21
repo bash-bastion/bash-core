@@ -5,5 +5,5 @@ task.test() {
 }
 
 task.docs() {
-	shdoc < './pkg/lib/public/bash-core.sh' > './docs/api.md'
+	shdoc < './pkg/src/public/bash-core.sh' > './docs/api.md'
 }
