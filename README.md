@@ -47,6 +47,12 @@ I suppose it can look redundant (compared to `if ! fn; then :; fi`), but it can 
 - `core.err_clear`
 - `core.err_exists`
 
+## `stacktrace`
+
+Prints the stack trace. Recommended to use with `core.trap_add`
+
+- `core.stacktrace_print`
+
 Example
 
 ```sh
