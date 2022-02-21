@@ -3,10 +3,10 @@
 core.err_set() {
 	if (($# == 1)); then
 		ERRCODE=1
-		ERR="$1"
+		ERR=$1
 	elif (($# == 2)); then
-		ERRCODE="$1"
-		ERR="$2"
+		ERRCODE=$1
+		ERR=$2
 	else
 		printf '%s\n' "Error: bash-error: Incorrect function arguments"
 		return 1
