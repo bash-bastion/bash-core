@@ -4,7 +4,7 @@ Core functions for any Bash program
 
 ## Summary
 
-The following are functions available for use. See the [api.md](./docs/api.md) for more details
+The following are functions available for use. See [api.md](./docs/api.md) for more details
 
 ### `init`
 
