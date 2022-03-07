@@ -138,7 +138,7 @@ err_handler() {
   core.stacktrace_print
   exit $exit_code
 }
-core.trap_add 'err_handler' EXIT
+core.trap_add 'err_handler' ERR
 ```
 
 _Function has no arguments._

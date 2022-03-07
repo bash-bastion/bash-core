@@ -251,7 +251,7 @@ core.err_exists() {
 #    core.stacktrace_print
 #    exit $exit_code
 #  }
-#  core.trap_add 'err_handler' EXIT
+#  core.trap_add 'err_handler' ERR
 core.stacktrace_print() {
 	printf '%s\n' 'Stacktrace:'
 
