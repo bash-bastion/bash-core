@@ -2,7 +2,7 @@
 type = 'bash'
 name = 'bash-core'
 slug = 'core'
-version = '0.2.0'
+version = '0.3.0'
 authors = ['Edwin Kofler <edwin@kofler.dev>']
 description = 'Core lightweight functions that any Bash programmer will love'
 
