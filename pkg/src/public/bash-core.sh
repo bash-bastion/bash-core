@@ -246,12 +246,12 @@ core.err_exists() {
 # @description Prints stacktrace
 # @noargs
 # @example
-#  core.trap_add 'err_handler' EXIT
 #  err_handler() {
 #    local exit_code=$?
 #    core.stacktrace_print
-#    exit $?
+#    exit $exit_code
 #  }
+#  core.trap_add 'err_handler' EXIT
 core.stacktrace_print() {
 	printf '%s\n' 'Stacktrace:'
 

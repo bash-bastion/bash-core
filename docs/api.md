@@ -133,12 +133,12 @@ Prints stacktrace
 #### Example
 
 ```bash
-core.trap_add 'err_handler' EXIT
 err_handler() {
   local exit_code=$?
   core.stacktrace_print
-  exit $?
+  exit $exit_code
 }
+core.trap_add 'err_handler' EXIT
 ```
 
 _Function has no arguments._
