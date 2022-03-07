@@ -44,7 +44,7 @@ core.trap_add() {
 		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
 		return 1
 	fi; unset regex
-	signal_spec="${signal_spec#SIG}"
+	signal_spec=${signal_spec#SIG}
 	if ! declare -f "$function" &>/dev/null; then
 		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
 		return 1
@@ -54,10 +54,10 @@ core.trap_add() {
 	___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
 
 	local global_trap_handler_name=
-	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
+	printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
 
 	if ! eval "$global_trap_handler_name() {
-	core.trap_common_global_handler "$signal_spec"
+	core.trap_handler_common "$signal_spec"
 }"; then
 		printf '%s\n' "Error: core.trap_add: Could not eval function"
 		return 1

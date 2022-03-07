@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 
-core.trap_common_global_handler() {
+core.trap_handler_common() {
 	local signal_spec="$1"
 
 	local trap_handlers=
