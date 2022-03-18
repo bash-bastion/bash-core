@@ -53,15 +53,17 @@ core.trap_add() {
 	# start
 	___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
 
+	# rho (WET)
 	local global_trap_handler_name=
 	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
 
 	if ! eval "$global_trap_handler_name() {
-	core.trap_common_global_handler "$signal_spec"
+	core.trap_common_global_handler '$signal_spec'
 }"; then
 		printf '%s\n' "Error: core.trap_add: Could not eval function"
 		return 1
 	fi
+	# shellcheck disable=SC2064
 	trap "$global_trap_handler_name" "$signal_spec"
 }
 
@@ -115,6 +117,11 @@ core.trap_remove() {
 	done; unset trap_handler
 
 	___global_trap_table___["$signal_spec"]="$new_trap_handlers"
+
+	# rho (WET)
+	local global_trap_handler_name=
+	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
+	unset -f "$global_trap_handler_name"
 }
 
 # @description Modifies current shell options and pushes information to stack, so
