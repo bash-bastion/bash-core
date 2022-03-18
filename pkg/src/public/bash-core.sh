@@ -44,7 +44,7 @@ core.trap_add() {
 		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
 		return 1
 	fi; unset regex
-	signal_spec="${signal_spec#SIG}"
+	signal_spec=${signal_spec#SIG}
 	if ! declare -f "$function" &>/dev/null; then
 		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
 		return 1
@@ -55,10 +55,10 @@ core.trap_add() {
 
 	# rho (WET)
 	local global_trap_handler_name=
-	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
+	printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
 
 	if ! eval "$global_trap_handler_name() {
-	core.trap_common_global_handler '$signal_spec'
+	core.trap_handler_common '$signal_spec'
 }"; then
 		printf '%s\n' "Error: core.trap_add: Could not eval function"
 		return 1
@@ -253,12 +253,12 @@ core.err_exists() {
 # @description Prints stacktrace
 # @noargs
 # @example
-#  core.trap_add 'err_handler' EXIT
 #  err_handler() {
 #    local exit_code=$?
 #    core.stacktrace_print
-#    exit $?
+#    exit $exit_code
 #  }
+#  core.trap_add 'err_handler' ERR
 core.stacktrace_print() {
 	printf '%s\n' 'Stacktrace:'
 

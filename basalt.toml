@@ -2,13 +2,13 @@
 type = 'bash'
 name = 'bash-core'
 slug = 'core'
-version = '0.2.0'
+version = '0.3.2'
 authors = ['Edwin Kofler <edwin@kofler.dev>']
 description = 'Core lightweight functions that any Bash programmer will love'
 
 [run]
 dependencies = ['https://github.com/hyperupcall/bats-all.git@v4.1.0']
-sourceDirs = ['pkg/src/public']
+sourceDirs = ['pkg/src/public', 'pkg/src/util']
 builtinDirs = []
 binDirs = []
 completionDirs = []
