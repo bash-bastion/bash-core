@@ -6,8 +6,6 @@
 # @description Initiates global variables used by other functions
 # @noargs
 core.init() {
-	# TODO: way below should error if any variables are not set
-
 	if [ ${___global_bash_core_has_init__+x} ]; then
 		return
 	fi
