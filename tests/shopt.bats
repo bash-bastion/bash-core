@@ -2,7 +2,7 @@
 
 load './util/init.sh'
 
-@test "Shopt push works" {
+@test "core.shotpt_push works" {
 	shopt -u extglob
 
 	core.shopt_push -s extglob
@@ -17,7 +17,7 @@ load './util/init.sh'
 	refute shopt -q extglob
 }
 
-@test "Shopt works multi" {
+@test "core.shopt_push works 2" {
 	shopt -u extglob
 	shopt -u dotglob
 	shopt -u failglob

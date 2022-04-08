@@ -6,28 +6,28 @@ load './util/init.sh'
 # actual execution of the functions on the signal. There seems to be a limitation
 # of Bats that prevents this from working
 
-@test "Fails when function specified does not exist" {
+@test "core.trap_add fails when function specified does not exist" {
 	run core.trap_add 'nonexistent' 'USR1'
 
 	assert_failure
 	assert_output -p "Function 'nonexistent' is not defined"
 }
 
-@test "Fails when number is given for signal" {
+@test "core.trap_add fails when number is given for signal" {
 	run core.trap_add 'function' '0'
 
 	assert_failure
 	assert_output -p "Passing numbers for the signal specs is prohibited"
 }
 
-@test "adds trap function properly" {
+@test "core.trap_add adds trap function properly" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
 
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction' ]
 }
 
-@test "adds trap function properly 2" {
+@test "core.trap_add adds function properly 2" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
@@ -36,7 +36,7 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction\x1Csomefunction2' ]
 }
 
-@test "removes trap function properly 1" {
+@test "core.trap_remove removes trap function properly 1" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_remove 'somefunction' 'USR1'
@@ -44,7 +44,7 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = '' ]
 }
 
-@test "removes trap function properly 2" {
+@test "core.trap_remove removes trap function properly 2" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
@@ -54,7 +54,7 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction2' ]
 }
 
-@test "removes trap function properly 3" {
+@test "core.trap_remove removes trap function properly 3" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
