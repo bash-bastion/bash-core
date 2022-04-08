@@ -44,7 +44,7 @@ core.trap_add() {
 	fi; unset regex
 	signal_spec=${signal_spec#SIG}
 	if ! declare -f "$function" &>/dev/null; then
-		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
+		printf '%s\n' "Error: core.trap_add: Function '$function' is not defined" >&2
 		return 1
 	fi
 
@@ -56,7 +56,7 @@ core.trap_add() {
 	printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
 
 	if ! eval "$global_trap_handler_name() {
-	core.trap_handler_common '$signal_spec'
+	core.util.trap_handler_common '$signal_spec'
 }"; then
 		printf '%s\n' "Error: core.trap_add: Could not eval function"
 		return 1
@@ -80,21 +80,21 @@ core.trap_remove() {
 
 	# validation
 	if [ -z "$function" ]; then
-		printf '%s\n' "Error: core.trap_add: First argument cannot be empty"
+		printf '%s\n' "Error: core.trap_remove: First argument cannot be empty"
 		return 1
 	fi
 	if [ -z "$signal_spec" ]; then
-		printf '%s\n' "Error: core.trap_add: Second argument cannot be empty"
+		printf '%s\n' "Error: core.trap_remove: Second argument cannot be empty"
 		return 1
 	fi
 	local regex='^[0-9]+$'
 	if [[ "$signal_spec" =~ $regex ]]; then
-		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
+		printf '%s\n' "Error: core.trap_remove: Passing numbers for the signal specs is prohibited"
 		return 1
 	fi; unset regex
 	signal_spec="${signal_spec#SIG}"
 	if ! declare -f "$function" &>/dev/null; then
-		printf '%s\n' "Error: core.trap_add: Function '$function' not defined" >&2
+		printf '%s\n' "Error: core.trap_remove: Function '$function' is not defined" >&2
 		return 1
 	fi
 
@@ -228,7 +228,7 @@ core.err_set() {
 }
 
 # @description Clears any of the global error state (sets to empty string).
-# This means any `core.err_exists` calls after this _will_ return `true`
+# This means any `core.err_exists` calls after this _will_ `return 1`
 # @noargs
 # @set number ERRCODE Error code
 # @set string ERR Error message

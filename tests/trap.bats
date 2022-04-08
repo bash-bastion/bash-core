@@ -10,7 +10,7 @@ load './util/init.sh'
 	run core.trap_add 'nonexistent' 'USR1'
 
 	assert_failure
-	assert_output -p "Function 'nonexistent' not defined"
+	assert_output -p "Function 'nonexistent' is not defined"
 }
 
 @test "Fails when number is given for signal" {
