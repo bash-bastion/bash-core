@@ -9,6 +9,27 @@ load './util/init.sh'
 # The '${___global_trap_table___[nokey]}' is there to ensure that the
 # ___global_trap_table___ is an actual associative array. If '___global_trap_table___' is not an associative array, the index with 'nokey' still returns the value of the variable (no error will be thrown). These were origianlly done when the 'core.init' function was not called within these tests
 
+@test "core.trap_add fails when function is not supplied" {
+	run core.trap_add '' 'USR1'
+
+	assert_failure
+	assert_output -p "Function cannot be empty"
+}
+
+@test "core.trap_add fails when signal is not supplied" {
+	run core.trap_add 'function' 
+
+	assert_failure
+	assert_output -p "Must specify at least one signal"
+}
+
+@test "core.trap_add fails when signal is empty" {
+	run core.trap_add 'function' ''
+
+	assert_failure
+	assert_output -p "Signal must not be an empty string"
+}
+
 @test "core.trap_add fails when function specified does not exist" {
 	run core.trap_add 'nonexistent' 'USR1'
 
@@ -43,6 +64,37 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction\x1Csomefunction2' ]
 }
 
+@test "core.trap_add adds function properly 3" {
+	somefunction() { :; }
+	core.init
+	core.trap_add 'somefunction' 'USR1' 'USR2'
+	
+	[ "${___global_trap_table___[nokey]}" != $'\x1Csomefunction' ]
+	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction' ]
+	[ "${___global_trap_table___[USR2]}" = $'\x1Csomefunction' ]
+}
+
+@test "core.trap_remove fails when function is not supplied" {
+	run core.trap_remove '' 'USR1'
+
+	assert_failure
+	assert_output -p "Function cannot be empty"
+}
+
+@test "core.trap_remove fails when signal is not supplied" {
+	run core.trap_remove 'function' 
+
+	assert_failure
+	assert_output -p "Must specify at least one signal"
+}
+
+@test "core.trap_remove fails when signal is empty" {
+	run core.trap_remove 'function' ''
+
+	assert_failure
+	assert_output -p "Signal must not be an empty string"
+}
+
 @test "core.trap_remove fails when function specified does not exist" {
 	run core.trap_remove 'nonexistent' 'USR1'
 
@@ -50,7 +102,7 @@ load './util/init.sh'
 	assert_output -p "Function 'nonexistent' is not defined"
 }
 
-@test "core.trap_remove removes trap function properly 1" {
+@test "core.trap_remove removes trap function properly" {
 	somefunction() { :; }
 	core.init
 	core.trap_add 'somefunction' 'USR1'
@@ -71,7 +123,18 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction2' ]
 }
 
-@test "core.trap_remove removes trap function properly 3" {
+@test "core.trap_add removes function properly 3" {
+	somefunction() { :; }
+	core.init
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_add 'somefunction' 'USR2'
+	core.trap_remove 'somefunction' 'USR1' 'USR2'
+
+	[ "${___global_trap_table___[USR1]}" = '' ]
+	[ "${___global_trap_table___[USR2]}" = '' ]
+}
+
+@test "core.trap_remove removes trap function properly 4" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.init
@@ -82,3 +145,5 @@ load './util/init.sh'
 	[ "${___global_trap_table___[nokey]}" != $'\x1Csomefunction' ]
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction' ]
 }
+
+

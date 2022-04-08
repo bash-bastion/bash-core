@@ -26,43 +26,50 @@ core.init() {
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
 	local function="$1"
-	local signal_spec="$2"
 
 	# validation
 	if [ -z "$function" ]; then
-		printf '%s\n' "Error: core.trap_add: First argument cannot be empty"
-		return 1
-	fi
-	if [ -z "$signal_spec" ]; then
-		printf '%s\n' "Error: core.trap_add: Second argument cannot be empty"
-		return 1
-	fi
-	local regex='^[0-9]+$'
-	if [[ "$signal_spec" =~ $regex ]]; then
-		printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
-		return 1
-	fi; unset regex
-	signal_spec=${signal_spec#SIG}
-	if ! declare -f "$function" &>/dev/null; then
-		printf '%s\n' "Error: core.trap_add: Function '$function' is not defined" >&2
+		printf '%s\n' "Error: core.trap_add: Function cannot be empty"
 		return 1
 	fi
 
-	# start
-	___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
-
-	# rho (WET)
-	local global_trap_handler_name=
-	printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
-
-	if ! eval "$global_trap_handler_name() {
-	core.util.trap_handler_common '$signal_spec'
-}"; then
-		printf '%s\n' "Error: core.trap_add: Could not eval function"
+	if (($# <= 1)); then
+		printf '%s\n' "Error: core.trap_add: Must specify at least one signal"
 		return 1
 	fi
-	# shellcheck disable=SC2064
-	trap "$global_trap_handler_name" "$signal_spec"
+	for signal_spec in "${@:2}"; do
+		if [ -z "$signal_spec" ]; then
+			printf '%s\n' "Error: core.trap_add: Signal must not be an empty string"
+			return 1
+		fi
+
+		local regex='^[0-9]+$'
+		if [[ "$signal_spec" =~ $regex ]]; then
+			printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
+			return 1
+		fi; unset regex
+		signal_spec=${signal_spec#SIG}
+		if ! declare -f "$function" &>/dev/null; then
+			printf '%s\n' "Error: core.trap_add: Function '$function' is not defined" >&2
+			return 1
+		fi
+
+		# start
+		___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
+
+		# rho (WET)
+		local global_trap_handler_name=
+		printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
+
+		if ! eval "$global_trap_handler_name() {
+		core.util.trap_handler_common '$signal_spec'
+	}"; then
+			printf '%s\n' "Error: core.trap_add: Could not eval function"
+			return 1
+		fi
+		# shellcheck disable=SC2064
+		trap "$global_trap_handler_name" "$signal_spec"
+	done
 }
 
 # @description Removes a handler for a particular `trap` signal or event. Currently,
@@ -76,50 +83,57 @@ core.trap_add() {
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
 	local function="$1"
-	local signal_spec="$2"
 
 	# validation
 	if [ -z "$function" ]; then
-		printf '%s\n' "Error: core.trap_remove: First argument cannot be empty"
-		return 1
-	fi
-	if [ -z "$signal_spec" ]; then
-		printf '%s\n' "Error: core.trap_remove: Second argument cannot be empty"
-		return 1
-	fi
-	local regex='^[0-9]+$'
-	if [[ "$signal_spec" =~ $regex ]]; then
-		printf '%s\n' "Error: core.trap_remove: Passing numbers for the signal specs is prohibited"
-		return 1
-	fi; unset regex
-	signal_spec="${signal_spec#SIG}"
-	if ! declare -f "$function" &>/dev/null; then
-		printf '%s\n' "Error: core.trap_remove: Function '$function' is not defined" >&2
+		printf '%s\n' "Error: core.trap_remove: Function cannot be empty"
 		return 1
 	fi
 
-	# start
-	local -a trap_handlers=()
-	local new_trap_handlers=
-	IFS=$'\x1C' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
-	for trap_handler in "${trap_handlers[@]}"; do
-		if [ -z "$trap_handler" ] || [ "$trap_handler" = $'\x1C' ]; then
-			continue
+	if (($# <= 1)); then
+		printf '%s\n' "Error: core.trap_remove: Must specify at least one signal"
+		return 1
+	fi
+	for signal_spec in "${@:2}"; do
+		if [ -z "$signal_spec" ]; then
+			printf '%s\n' "Error: core.trap_add: Signal must not be an empty string"
+			return 1
 		fi
 
-		if [ "$trap_handler" = "$function" ]; then
-			continue
+		local regex='^[0-9]+$'
+		if [[ "$signal_spec" =~ $regex ]]; then
+			printf '%s\n' "Error: core.trap_remove: Passing numbers for the signal specs is prohibited"
+			return 1
+		fi; unset regex
+		signal_spec="${signal_spec#SIG}"
+		if ! declare -f "$function" &>/dev/null; then
+			printf '%s\n' "Error: core.trap_remove: Function '$function' is not defined" >&2
+			return 1
 		fi
 
-		new_trap_handlers+=$'\x1C'"$trap_handler"
-	done; unset trap_handler
+		# start
+		local -a trap_handlers=()
+		local new_trap_handlers=
+		IFS=$'\x1C' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
+		for trap_handler in "${trap_handlers[@]}"; do
+			if [ -z "$trap_handler" ] || [ "$trap_handler" = $'\x1C' ]; then
+				continue
+			fi
 
-	___global_trap_table___["$signal_spec"]="$new_trap_handlers"
+			if [ "$trap_handler" = "$function" ]; then
+				continue
+			fi
 
-	# rho (WET)
-	local global_trap_handler_name=
-	printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
-	unset -f "$global_trap_handler_name"
+			new_trap_handlers+=$'\x1C'"$trap_handler"
+		done; unset trap_handler
+
+		___global_trap_table___["$signal_spec"]="$new_trap_handlers"
+
+		# rho (WET)
+		local global_trap_handler_name=
+		printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
+		unset -f "$global_trap_handler_name"
+	done
 }
 
 # @description Modifies current shell options and pushes information to stack, so
