@@ -36,6 +36,13 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction\x1Csomefunction2' ]
 }
 
+@test "core.trap_remove fails when function specified does not exist" {
+	run core.trap_remove 'nonexistent' 'USR1'
+
+	assert_failure
+	assert_output -p "Function 'nonexistent' is not defined"
+}
+
 @test "core.trap_remove removes trap function properly 1" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
