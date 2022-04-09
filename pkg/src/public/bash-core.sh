@@ -231,12 +231,12 @@ core.err_set() {
 		ERRCODE=$1
 		ERR=$2
 	else
-		printf '%s\n' "Error: bash-error: Incorrect function arguments"
+		printf '%s\n' "Error: core.err_set: Incorrect function arguments"
 		return 1
 	fi
 
 	if [ -z "$ERR" ]; then
-		printf '%s\n' "Error: bash-error: Argument for 'ERR' cannot be empty"
+		printf '%s\n' "Error: core.err_set: Argument for 'ERR' cannot be empty"
 		return 1
 	fi
 }
@@ -298,7 +298,7 @@ core.stacktrace_print() {
 	done; unset -v i
 
 	if [ "$cd_failed" = 'yes' ]; then
-		printf '%s\n' "Error: bash-error: A 'cd' failed, so the stacktrace may include relative paths"
+		printf '%s\n' "Error: core.stacktrace_print: A 'cd' failed, so the stacktrace may include relative paths"
 	fi
 } >&2
 
