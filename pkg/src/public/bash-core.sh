@@ -274,10 +274,32 @@ core.err_exists() {
 core.stacktrace_print() {
 	printf '%s\n' 'Stacktrace:'
 
+	local old_cd="$PWD" cd_failed='no'
 	local i=
 	for ((i=0; i<${#FUNCNAME[@]}-1; ++i)); do
-		printf '%s\n' "  in ${FUNCNAME[$i]} (${BASH_SOURCE[$i]}:${BASH_LINENO[$i-1]})"
+		local file="${BASH_SOURCE[$i]}"
+
+		# If the 'cd' has previous failed, then do not attempt to 'cd' as the current
+		# directory is not in '$old_cd' (so the 'cd' will almost certainly fail)
+		if [ "$cd_failed" = 'no' ]; then
+			# shellcheck disable=SC1007
+			if CDPATH= cd -- "${file%/*}"; then
+				file="$PWD/${file##*/}"
+			else
+				cd_failed='yes'
+			fi
+		fi
+
+		printf '%s\n' "  in ${FUNCNAME[$i]} ($file:${BASH_LINENO[$i-1]})"
+
+		if ! CDPATH= cd -- "$old_cd"; then
+			cd_failed='yes'
+		fi
 	done; unset -v i
+
+	if [ "$cd_failed" = 'yes' ]; then
+		printf '%s\n' "Error: bash-error: A 'cd' failed, so the stacktrace may include relative paths"
+	fi
 } >&2
 
 # @description Determine if color should be printed
