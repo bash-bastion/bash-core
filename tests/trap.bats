@@ -2,12 +2,15 @@
 
 load './util/init.sh'
 
-# Note that this and similar functions only test for array appending, not
-# actual execution of the functions on the signal. There seems to be a limitation
+# Note that the array appending of these core.trap-* functions are tested. The actual
+# execution of the functions on the signal are bit tested. There seems to be a limitation
 # of Bats that prevents this from working
 
-# The '${___global_trap_table___[nokey]}' is there to ensure that the
-# ___global_trap_table___ is an actual associative array. If '___global_trap_table___' is not an associative array, the index with 'nokey' still returns the value of the variable (no error will be thrown). These were origianlly done when the 'core.init' function was not called within these tests
+# Additionally, the '${___global_trap_table___[nokey]}' is there to ensure that the
+# ___global_trap_table___ is an associative array. If that variable is not an associative
+# array, indexing with 'nokey' still yields the value of the (string) variable (no error
+# will be thrown). Now that 'core.init' is automatically called when the array is not
+# defined (to be an associative array), these checks are unecessary (yet, they still exist)
 
 @test "core.trap_add fails when function is not supplied" {
 	run core.trap_add '' 'USR1'

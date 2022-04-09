@@ -1,5 +1,6 @@
 # shellcheck shell=bash
 
+# @internal
 core.util.init() {
 	if [ ${___global_bash_core_has_init__+x} ]; then
 		return
@@ -10,6 +11,7 @@ core.util.init() {
 	declare -ga ___global_shopt_stack___=()
 }
 
+# @internal
 core.util.trap_handler_common() {
 	local signal_spec="$1"
 

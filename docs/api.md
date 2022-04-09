@@ -18,8 +18,7 @@ Core functions for any Bash program
 
 ### core.init()
 
-Initiates global variables used by other functions
-@deprecated
+(DEPRECATED) Initiates global variables used by other functions. Deprecated as this function is called automatically
 
 _Function has no arguments._
 

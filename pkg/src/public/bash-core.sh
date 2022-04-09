@@ -3,8 +3,7 @@
 # @name bash-core
 # @description Core functions for any Bash program
 
-# @description Initiates global variables used by other functions
-# @deprecated
+# @description (DEPRECATED) Initiates global variables used by other functions. Deprecated as this function is called automatically
 # @noargs
 core.init() {
 	core.util.init
