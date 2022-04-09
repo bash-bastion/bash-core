@@ -8,7 +8,7 @@ The following are functions available for use. See [api.md](./docs/api.md) for m
 
 ### `init`
 
-- `core.init`
+- `core.util.init`
 
 Initialize global variables used by other functions
 

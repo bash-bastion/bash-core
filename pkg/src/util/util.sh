@@ -1,5 +1,15 @@
 # shellcheck shell=bash
 
+core.util.init() {
+	if [ ${___global_bash_core_has_init__+x} ]; then
+		return
+	fi
+
+	___global_bash_core_has_init__=
+	declare -gA ___global_trap_table___=()
+	declare -ga ___global_shopt_stack___=()
+}
+
 core.util.trap_handler_common() {
 	local signal_spec="$1"
 

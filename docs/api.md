@@ -19,6 +19,7 @@ Core functions for any Bash program
 ### core.init()
 
 Initiates global variables used by other functions
+@deprecated
 
 _Function has no arguments._
 
@@ -110,7 +111,7 @@ Sets an error.
 ### core.err_clear()
 
 Clears any of the global error state (sets to empty string).
-This means any `core.err_exists` calls after this _will_ return `true`
+This means any `core.err_exists` calls after this _will_ `return 1`
 
 _Function has no arguments._
 

@@ -4,15 +4,10 @@
 # @description Core functions for any Bash program
 
 # @description Initiates global variables used by other functions
+# @deprecated
 # @noargs
 core.init() {
-	if [ ${___global_bash_core_has_init__+x} ]; then
-		return
-	fi
-
-	___global_bash_core_has_init__=
-	declare -Ag ___global_trap_table___=()
-	declare -ag ___global_shopt_stack___=()
+	core.util.init
 }
 
 # @description Adds a handler for a particular `trap` signal or event. Noticably,
@@ -25,6 +20,9 @@ core.init() {
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
+	if ! [ ${___global_bash_core_has_init__+x} ]; then
+		core.util.init
+	fi
 	local function="$1"
 
 	# validation
@@ -82,6 +80,9 @@ core.trap_add() {
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
+	if ! [ ${___global_bash_core_has_init__+x} ]; then
+		core.util.init
+	fi
 	local function="$1"
 
 	# validation
@@ -146,6 +147,9 @@ core.trap_remove() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_push() {
+	if ! [ ${___global_bash_core_has_init__+x} ]; then
+		core.util.init
+	fi
 	local shopt_action="$1"
 	local shopt_name="$2"
 
@@ -195,6 +199,10 @@ core.shopt_push() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_pop() {
+	if ! [ ${___global_bash_core_has_init__+x} ]; then
+		core.util.init
+	fi
+
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
 		printf '%s\n' "Error: core.shopt_pop: Unable to pop as nothing is in the shopt stack"
 		return 1
@@ -330,6 +338,7 @@ core.should_color_output() {
 # @set REPLY The full path to the directory
 # @internal
 core.get_package_dir() {
+	
 	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
 
 	# while [ ! -f 'basalt.toml' ] && [ "$PWD" != / ]; do

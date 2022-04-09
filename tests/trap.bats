@@ -46,7 +46,6 @@ load './util/init.sh'
 
 @test "core.trap_add adds trap function properly" {
 	somefunction() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 
 	[ "${___global_trap_table___[nokey]}" != $'\x1Csomefunction' ]
@@ -56,7 +55,6 @@ load './util/init.sh'
 @test "core.trap_add adds function properly 2" {
 	somefunction() { :; }
 	somefunction2() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_add 'somefunction2' 'USR1'
 
@@ -66,7 +64,6 @@ load './util/init.sh'
 
 @test "core.trap_add adds function properly 3" {
 	somefunction() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1' 'USR2'
 	
 	[ "${___global_trap_table___[nokey]}" != $'\x1Csomefunction' ]
@@ -104,7 +101,6 @@ load './util/init.sh'
 
 @test "core.trap_remove removes trap function properly" {
 	somefunction() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_remove 'somefunction' 'USR1'
 
@@ -114,7 +110,6 @@ load './util/init.sh'
 @test "core.trap_remove removes trap function properly 2" {
 	somefunction() { :; }
 	somefunction2() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_add 'somefunction2' 'USR1'
 	core.trap_remove 'somefunction' 'USR1'
@@ -125,7 +120,6 @@ load './util/init.sh'
 
 @test "core.trap_add removes function properly 3" {
 	somefunction() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_add 'somefunction' 'USR2'
 	core.trap_remove 'somefunction' 'USR1' 'USR2'
@@ -137,7 +131,6 @@ load './util/init.sh'
 @test "core.trap_remove removes trap function properly 4" {
 	somefunction() { :; }
 	somefunction2() { :; }
-	core.init
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_add 'somefunction2' 'USR1'
 	core.trap_remove 'somefunction2' 'USR1'
