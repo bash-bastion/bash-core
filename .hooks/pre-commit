@@ -5,4 +5,4 @@ hookah.init
 
 hookah.run ./bake test
 hookah.run ./bake docs
-git add './docs/api.md'
+git add ./docs/*
