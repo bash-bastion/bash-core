@@ -15,6 +15,8 @@ Core functions for any Bash program
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
 * [core.stacktrace_print()](#corestacktrace_print)
+* [core.should_output_color()](#coreshould_output_color)
+* [core.get_package_info()](#coreget_package_info)
 
 ### core.init()
 
@@ -142,4 +144,22 @@ core.trap_add 'err_handler' ERR
 ```
 
 _Function has no arguments._
+
+### core.should_output_color()
+
+Determine if color should be printed. Note that this doesn't
+use tput because simple environment variable checking heuristics suffice
+
+### core.get_package_info()
+
+Gets information from a particular package. If the key does not exist, then the value
+is an empty string
+
+#### Arguments
+
+* **$1** (string): The `$BASALT_PACKAGE_DIR` of the caller
+
+#### Variables set
+
+* **REPLY** (string): The full path to the directory
 

@@ -309,41 +309,58 @@ core.stacktrace_print() {
 	fi
 } >&2
 
-# @description Determine if color should be printed
-# @internal
-core.should_color_output() {
-	# TODO: 'COLORTERM'
-
+# @description Determine if color should be printed. Note that this doesn't
+# use tput because simple environment variable checking heuristics suffice
+core.should_output_color() {
 	# https://no-color.org
-	if [[ -v NO_COLOR ]]; then
+	if [ ${NO_COLOR+x} ]; then
 		return 1
 	fi
 
-	# 0 => 2 colors
-	# 1 => 16 colors
-	# 2 => 256 colors
-	# 3 => 16,777,216 colors
-	if [[ -v FORCE_COLOR ]]; then
+	# FIXME
+	# # 0 => 2 colors
+	# # 1 => 16 colors
+	# # 2 => 256 colors
+	# # 3 => 16,777,216 colors
+	# if [[ -v FORCE_COLOR ]]; then
+	# 	return 0
+	# fi
+
+	if [ "$COLORTERM" = "truecolor" ] || [ "$COLORTERM" = "24bit" ]; then
 		return 0
 	fi
 
-	if [[ $TERM == dumb ]]; then
+	if [ "$TERM" = 'dumb' ]; then
+		return 1
+	fi
+
+	if [ -t 0 ]; then
 		return 0
 	fi
+
+	return 1
 }
 
-# @description Get version of the package, from the point of the callsite. In other words, it
-# returns the version of the package that has the file containing the direct caller of this
-# @set REPLY The full path to the directory
-# @internal
-core.get_package_dir() {
+# @description Gets information from a particular package. If the key does not exist, then the value
+# is an empty string
+# @arg $1 string The `$BASALT_PACKAGE_DIR` of the caller
+# @set REPLY string The full path to the directory
+core.get_package_info() {
+	unset REPLY; REPLY=
+	local basalt_package_dir="$1"
+	local key_name="$2"
 	
-	# local start_dir="${1:-"${BASH_SOURCE[1]}"}"
+	local toml_file="$basalt_package_dir/basalt.toml"
 
-	# while [ ! -f 'basalt.toml' ] && [ "$PWD" != / ]; do
-	# 	if ! cd ..; then
-	# 		return 1
-	# 	fi
-	# done
-	:
+	if [ ! -f "$toml_file" ]; then
+		printf '%s\n' "Error: core.get_package_data: File '$toml_file' could not be found"
+	fi
+
+	local regex="^[ \t]*${key_name}[ \t]*=[ \t]*['\"](.*)['\"]"
+	while IFS= read -r line || [ -n "$line" ]; do
+		if [[ $line =~ $regex ]]; then
+			REPLY=${BASH_REMATCH[1]}
+			break
+		fi
+	done < "$toml_file"; unset -v line
 }
