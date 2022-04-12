@@ -15,6 +15,9 @@ Core functions for any Bash program
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
 * [core.stacktrace_print()](#corestacktrace_print)
+* [core.print_error()](#coreprint_error)
+* [core.print_warn()](#coreprint_warn)
+* [core.print_info()](#coreprint_info)
 * [core.should_output_color()](#coreshould_output_color)
 * [core.get_package_info()](#coreget_package_info)
 
@@ -144,6 +147,30 @@ core.trap_add 'err_handler' ERR
 ```
 
 _Function has no arguments._
+
+### core.print_error()
+
+Print an error message to standard error
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_warn()
+
+Print a warning message to standard error
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_info()
+
+Print an informative message to standard output
+
+#### Arguments
+
+* **$1** (string): message
 
 ### core.should_output_color()
 

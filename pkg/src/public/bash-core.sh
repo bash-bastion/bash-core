@@ -309,6 +309,30 @@ core.stacktrace_print() {
 	fi
 } >&2
 
+# @description Print an error message to standard error
+# @arg $1 string message
+core.print_error() {
+	local msg="$1"
+
+	printf '%s\n' "Error: ${FUNCNAME[1]}${msg:+": "}$msg" >&2
+}
+
+# @description Print a warning message to standard error
+# @arg $1 string message
+core.print_warn() {
+	local msg="$1"
+
+	printf '%s\n' "Warn: ${FUNCNAME[1]}${msg:+": "}$msg" >&2
+}
+
+# @description Print an informative message to standard output
+# @arg $1 string message
+core.print_info() {
+	local msg="$1"
+
+	printf '%s\n' "Info: ${FUNCNAME[1]}${msg:+": "}$msg"
+}
+
 # @description Determine if color should be printed. Note that this doesn't
 # use tput because simple environment variable checking heuristics suffice
 core.should_output_color() {
@@ -353,7 +377,7 @@ core.get_package_info() {
 	local toml_file="$basalt_package_dir/basalt.toml"
 
 	if [ ! -f "$toml_file" ]; then
-		printf '%s\n' "Error: core.get_package_data: File '$toml_file' could not be found"
+		printf '%s\n' "Error: core.get_package_info: File '$toml_file' could not be found"
 	fi
 
 	local regex="^[ \t]*${key_name}[ \t]*=[ \t]*['\"](.*)['\"]"
