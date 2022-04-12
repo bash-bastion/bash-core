@@ -132,7 +132,7 @@ core.trap_remove() {
 
 # @description Modifies current shell options and pushes information to stack, so
 # it can later be easily undone. Note that it does not check to see if your Bash
-# version supports the
+# version supports the option
 # @arg $1 string Name of shopt action. Can either be `-u` or `-s`
 # @arg $2 string Name of shopt name
 # @example
