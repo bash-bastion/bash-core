@@ -6,7 +6,6 @@ Core functions for any Bash program
 
 ## Index
 
-* [core.init()](#coreinit)
 * [core.trap_add()](#coretrap_add)
 * [core.trap_remove()](#coretrap_remove)
 * [core.shopt_push()](#coreshopt_push)
@@ -14,19 +13,14 @@ Core functions for any Bash program
 * [core.err_set()](#coreerr_set)
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
-* [core.stacktrace_print()](#corestacktrace_print)
 * [core.print_stacktrace()](#coreprint_stacktrace)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
 * [core.print_info()](#coreprint_info)
 * [core.should_output_color()](#coreshould_output_color)
 * [core.get_package_info()](#coreget_package_info)
-
-### core.init()
-
-(DEPRECATED) Initiates global variables used by other functions. Deprecated as this function is called automatically
-
-_Function has no arguments._
+* [core.init()](#coreinit)
+* [core.stacktrace_print()](#corestacktrace_print)
 
 ### core.trap_add()
 
@@ -132,14 +126,6 @@ _does_ exist
 
 _Function has no arguments._
 
-### core.stacktrace_print()
-
-(DEPRECATED) Prints stacktrace
-
-#### See also
-
-* [core.print_stacktrace](#coreprint_stacktrace)
-
 ### core.print_stacktrace()
 
 Prints stacktrace
@@ -198,4 +184,19 @@ is an empty string
 #### Variables set
 
 * **REPLY** (string): The full path to the directory
+
+### core.init()
+
+(DEPRECATED) Initiates global variables used by other functions. Deprecated as
+this function is called automatically by functions that use global variables
+
+_Function has no arguments._
+
+### core.stacktrace_print()
+
+(DEPRECATED) Prints stacktrace
+
+#### See also
+
+* [core.print_stacktrace](#coreprint_stacktrace)
 

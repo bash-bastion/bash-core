@@ -3,12 +3,6 @@
 # @name bash-core
 # @description Core functions for any Bash program
 
-# @description (DEPRECATED) Initiates global variables used by other functions. Deprecated as this function is called automatically
-# @noargs
-core.init() {
-	core.util.init
-}
-
 # @description Adds a handler for a particular `trap` signal or event. Noticably,
 # unlike the 'builtin' trap, this does not override any other existing handlers
 # @arg $1 string Function to execute on an event. Integers are forbiden
@@ -269,13 +263,6 @@ core.err_exists() {
 	fi
 }
 
-# @description (DEPRECATED) Prints stacktrace
-# @see core.print_stacktrace
-core.stacktrace_print() {
-	core.print_warn "The function 'core.stacktrace_print' is deprecated in favor of 'core.print_stacktrace'"
-	core.print_stacktrace "$@"
-}
-
 # @description Prints stacktrace
 # @noargs
 # @example
@@ -394,4 +381,18 @@ core.get_package_info() {
 			break
 		fi
 	done < "$toml_file"; unset -v line
+}
+
+# @description (DEPRECATED) Initiates global variables used by other functions. Deprecated as
+# this function is called automatically by functions that use global variables
+# @noargs
+core.init() {
+	core.util.init
+}
+
+# @description (DEPRECATED) Prints stacktrace
+# @see core.print_stacktrace
+core.stacktrace_print() {
+	core.print_warn "The function 'core.stacktrace_print' is deprecated in favor of 'core.print_stacktrace'"
+	core.print_stacktrace "$@"
 }
