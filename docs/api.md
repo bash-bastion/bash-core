@@ -15,6 +15,7 @@ Core functions for any Bash program
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
 * [core.stacktrace_print()](#corestacktrace_print)
+* [core.print_stacktrace()](#coreprint_stacktrace)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
 * [core.print_info()](#coreprint_info)
@@ -133,6 +134,14 @@ _Function has no arguments._
 
 ### core.stacktrace_print()
 
+(DEPRECATED) Prints stacktrace
+
+#### See also
+
+* [core.print_stacktrace](#coreprint_stacktrace)
+
+### core.print_stacktrace()
+
 Prints stacktrace
 
 #### Example
@@ -140,7 +149,7 @@ Prints stacktrace
 ```bash
 err_handler() {
   local exit_code=$?
-  core.stacktrace_print
+  core.print_stacktrace
   exit $exit_code
 }
 core.trap_add 'err_handler' ERR

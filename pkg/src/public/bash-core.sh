@@ -269,16 +269,23 @@ core.err_exists() {
 	fi
 }
 
+# @description (DEPRECATED) Prints stacktrace
+# @see core.print_stacktrace
+core.stacktrace_print() {
+	core.print_warn "The function 'core.stacktrace_print' is deprecated in favor of 'core.print_stacktrace'"
+	core.print_stacktrace "$@"
+}
+
 # @description Prints stacktrace
 # @noargs
 # @example
 #  err_handler() {
 #    local exit_code=$?
-#    core.stacktrace_print
+#    core.print_stacktrace
 #    exit $exit_code
 #  }
 #  core.trap_add 'err_handler' ERR
-core.stacktrace_print() {
+core.print_stacktrace() {
 	printf '%s\n' 'Stacktrace:'
 
 	local old_cd="$PWD" cd_failed='no'
