@@ -28,11 +28,14 @@ It can look redundant (compared to `if ! fn; then :; fi`) to define error functi
 - `core.err_clear`
 - `core.err_exists`
 
-### `stacktrace`
+### `print`
 
-Prints the stack trace. It is recommended to use this with `core.trap_add` (see [example](./docs/api.md#corestacktraceprint))
+- `core.print_error`
+- `core.print_warn`
+- `core.print_info`
+- `core.print_stacktrace`
 
-- `core.stacktrace_print`
+The function `core.print_stacktrace` prints the stack trace. It is recommended to use this with `core.trap_add` (see [example](./docs/api.md#coreprint_stacktrace))
 
 This is what it may look like
 
