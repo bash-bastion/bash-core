@@ -20,28 +20,28 @@ core.trap_add() {
 
 	# validation
 	if [ -z "$function" ]; then
-		printf '%s\n' "Error: core.trap_add: Function cannot be empty"
+		core.print_error 'First argument must not be empty'
 		return 1
 	fi
 
 	if (($# <= 1)); then
-		printf '%s\n' "Error: core.trap_add: Must specify at least one signal"
+		core.print_error 'Must specify at least one signal'
 		return 1
 	fi
 	for signal_spec in "${@:2}"; do
 		if [ -z "$signal_spec" ]; then
-			printf '%s\n' "Error: core.trap_add: Signal must not be an empty string"
+			core.print_error 'Signal must not be an empty string'
 			return 1
 		fi
 
 		local regex='^[0-9]+$'
 		if [[ "$signal_spec" =~ $regex ]]; then
-			printf '%s\n' "Error: core.trap_add: Passing numbers for the signal specs is prohibited"
+			core.print_error 'Passing numbers for the signal specs is prohibited'
 			return 1
 		fi; unset regex
 		signal_spec=${signal_spec#SIG}
 		if ! declare -f "$function" &>/dev/null; then
-			printf '%s\n' "Error: core.trap_add: Function '$function' is not defined" >&2
+			core.print_error "Function '$function' is not defined"
 			return 1
 		fi
 
@@ -55,7 +55,7 @@ core.trap_add() {
 		if ! eval "$global_trap_handler_name() {
 		core.util.trap_handler_common '$signal_spec'
 	}"; then
-			printf '%s\n' "Error: core.trap_add: Could not eval function"
+			core.print_error 'Could not eval function'
 			return 1
 		fi
 		# shellcheck disable=SC2064
@@ -80,28 +80,28 @@ core.trap_remove() {
 
 	# validation
 	if [ -z "$function" ]; then
-		printf '%s\n' "Error: core.trap_remove: Function cannot be empty"
+		core.print_error 'First argument must not be empty'
 		return 1
 	fi
 
 	if (($# <= 1)); then
-		printf '%s\n' "Error: core.trap_remove: Must specify at least one signal"
+		core.print_error 'Must specify at least one signal'
 		return 1
 	fi
 	for signal_spec in "${@:2}"; do
 		if [ -z "$signal_spec" ]; then
-			printf '%s\n' "Error: core.trap_add: Signal must not be an empty string"
+			core.print_error 'Signal must not be an empty string'
 			return 1
 		fi
 
 		local regex='^[0-9]+$'
 		if [[ "$signal_spec" =~ $regex ]]; then
-			printf '%s\n' "Error: core.trap_remove: Passing numbers for the signal specs is prohibited"
+			core.print_error 'Passing numbers for the signal specs is prohibited'
 			return 1
 		fi; unset regex
 		signal_spec="${signal_spec#SIG}"
 		if ! declare -f "$function" &>/dev/null; then
-			printf '%s\n' "Error: core.trap_remove: Function '$function' is not defined" >&2
+			core.print_error "Function '$function' is not defined"
 			return 1
 		fi
 
@@ -147,12 +147,12 @@ core.shopt_push() {
 	local shopt_name="$2"
 
 	if [ -z "$shopt_action" ]; then
-		printf '%s\n' "Error: core.shopt_push: First argument cannot be empty"
+		core.print_error 'First argument cannot be empty'
 		return 1
 	fi
 
 	if [ -z "$shopt_name" ]; then
-		printf '%s\n' "Error: core.shopt_push: Second argument cannot be empty"
+		core.print_error 'Second argument cannot be empty'
 		return 1
 	fi
 
@@ -174,7 +174,7 @@ core.shopt_push() {
 			return $?
 		fi
 	else
-		printf '%s\n' "Error: core.shopt_push: Accepted actions are either '-s' or '-u'" >&2
+		core.print_error "Accepted actions are either '-s' or '-u'"
 		return 1
 	fi
 
@@ -197,12 +197,12 @@ core.shopt_pop() {
 	fi
 
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
-		printf '%s\n' "Error: core.shopt_pop: Unable to pop as nothing is in the shopt stack"
+		core.print_error 'Unable to pop as nothing is in the shopt stack'
 		return 1
 	fi
 
 	if (( ${#___global_shopt_stack___[@]} & 1 )); then
-		printf '%s\n' "Fatal: core.shopt_pop: Shopt stack is malformed"
+		core.print_error 'Shopt stack is malformed'
 		return 1
 	fi
 
@@ -212,7 +212,7 @@ core.shopt_pop() {
 
 	if shopt -u "$shopt_name"; then :; else
 		local errcode=$?
-		printf '%s\n' "Fatal: core.shopt_pop: Could not restore previous option" >&2
+		core.print_error 'Could not restore previous shopt option'
 		return $errcode
 	fi
 
@@ -232,12 +232,12 @@ core.err_set() {
 		ERRCODE=$1
 		ERR=$2
 	else
-		printf '%s\n' "Error: core.err_set: Incorrect function arguments"
+		core.print_error 'Incorrect function arguments'
 		return 1
 	fi
 
 	if [ -z "$ERR" ]; then
-		printf '%s\n' "Error: core.err_set: Argument for 'ERR' cannot be empty"
+		core.print_error "Argument for 'ERR' cannot be empty"
 		return 1
 	fi
 }
@@ -299,7 +299,7 @@ core.print_stacktrace() {
 	done; unset -v i
 
 	if [ "$cd_failed" = 'yes' ]; then
-		printf '%s\n' "Error: core.stacktrace_print: A 'cd' failed, so the stacktrace may include relative paths"
+		core.print_error "A 'cd' failed, so the stacktrace may include relative paths"
 	fi
 } >&2
 
@@ -371,7 +371,7 @@ core.get_package_info() {
 	local toml_file="$basalt_package_dir/basalt.toml"
 
 	if [ ! -f "$toml_file" ]; then
-		printf '%s\n' "Error: core.get_package_info: File '$toml_file' could not be found"
+		core.print_error "File '$toml_file' could not be found"
 	fi
 
 	local regex="^[ \t]*${key_name}[ \t]*=[ \t]*['\"](.*)['\"]"

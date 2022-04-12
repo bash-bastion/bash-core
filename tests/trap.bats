@@ -16,7 +16,7 @@ load './util/init.sh'
 	run core.trap_add '' 'USR1'
 
 	assert_failure
-	assert_output -p "Function cannot be empty"
+	assert_output -p "First argument must not be empty"
 }
 
 @test "core.trap_add fails when signal is not supplied" {
@@ -78,7 +78,7 @@ load './util/init.sh'
 	run core.trap_remove '' 'USR1'
 
 	assert_failure
-	assert_output -p "Function cannot be empty"
+	assert_output -p "First argument must not be empty"
 }
 
 @test "core.trap_remove fails when signal is not supplied" {

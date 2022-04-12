@@ -64,7 +64,7 @@ core.trap_remove 'some_handler' 'USR1'
 
 Modifies current shell options and pushes information to stack, so
 it can later be easily undone. Note that it does not check to see if your Bash
-version supports the
+version supports the option
 
 #### Example
 
