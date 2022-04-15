@@ -183,7 +183,7 @@ is an empty string
 
 #### Variables set
 
-* **REPLY** (string): The full path to the directory
+* **directory** (string): The full path to the directory
 
 ### core.init()
 

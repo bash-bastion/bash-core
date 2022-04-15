@@ -362,7 +362,7 @@ core.should_output_color() {
 # @description Gets information from a particular package. If the key does not exist, then the value
 # is an empty string
 # @arg $1 string The `$BASALT_PACKAGE_DIR` of the caller
-# @set REPLY string The full path to the directory
+# @set directory string The full path to the directory
 core.get_package_info() {
 	unset REPLY; REPLY=
 	local basalt_package_dir="$1"
@@ -374,7 +374,7 @@ core.get_package_info() {
 		core.print_error "File '$toml_file' could not be found"
 	fi
 
-	local regex="^[ \t]*${key_name}[ \t]*=[ \t]*['\"](.*)['\"]"
+	local regex=$'^[ \t]*'"${key_name}"$'[ \t]*=[ \t]*[\'"](.*)[\'"]'
 	while IFS= read -r line || [ -n "$line" ]; do
 		if [[ $line =~ $regex ]]; then
 			REPLY=${BASH_REMATCH[1]}
