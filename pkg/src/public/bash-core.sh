@@ -317,7 +317,7 @@ core.panic() {
 		if [ -n "$2" ]; then
 			code=$2
 		fi
-		core.print_error "$1"
+		printf '%s\n' "Panic: $1" >&2
 	fi
 
 	if core.err_exists; then
