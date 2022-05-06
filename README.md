@@ -37,7 +37,7 @@ It can look redundant (compared to `if ! fn; then :; fi`) to define error functi
 
 The function `core.print_stacktrace` prints the stack trace. It is recommended to use this with `core.trap_add` (see [example](./docs/api.md#coreprint_stacktrace))
 
-### `misc`
+### Misc
 
 Miscellaneous functions
 
