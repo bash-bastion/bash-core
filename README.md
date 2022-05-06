@@ -27,8 +27,6 @@ It can look redundant (compared to `if ! fn; then :; fi`) to define error functi
 - `core.err_set`
 - `core.err_clear`
 - `core.err_exists`
-- `core.err_print`
-- `core.err_print` (TODO: Make this internal)
 
 ### `print`
 

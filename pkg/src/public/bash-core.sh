@@ -241,13 +241,6 @@ core.err_exists() {
 	fi
 }
 
-# @description Prints the current error stored
-core.err_print() {
-	printf '%s\n' 'Error found:'
-	printf '%s\n' "  ERRCODE: $ERRCODE" >&2
-	printf '%s\n' "  ERR: $ERR" >&2
-}
-
 # @description Prints stacktrace
 # @noargs
 # @example
@@ -330,7 +323,7 @@ core.panic() {
 	if core.err_exists; then
 		core.err_print
 	fi
-	core.print_stacktrace
+	core.util.err_print
 	exit "$code"
 }
 

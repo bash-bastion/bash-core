@@ -13,7 +13,6 @@ Core functions for any Bash program
 * [core.err_set()](#coreerr_set)
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
-* [core.err_print()](#coreerr_print)
 * [core.print_stacktrace()](#coreprint_stacktrace)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
@@ -127,10 +126,6 @@ Checks if an error exists. If `ERR` is not empty, then an error
 _does_ exist
 
 _Function has no arguments._
-
-### core.err_print()
-
-Prints the current error stored
 
 ### core.print_stacktrace()
 
