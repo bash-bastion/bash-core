@@ -263,6 +263,13 @@ core.err_exists() {
 	fi
 }
 
+# @description Prints the current error stored
+core.err_print() {
+	printf '%s\n' 'Error found:'
+	printf '%s\n' "  ERRCODE: $ERRCODE" >&2
+	printf '%s\n' "  ERR: $ERR" >&2
+}
+
 # @description Prints stacktrace
 # @noargs
 # @example
@@ -293,6 +300,7 @@ core.print_stacktrace() {
 
 		printf '%s\n' "  in ${FUNCNAME[$i]} ($file:${BASH_LINENO[$i-1]})"
 
+		# shellcheck disable=SC1007
 		if ! CDPATH= cd -- "$old_cd"; then
 			cd_failed='yes'
 		fi
@@ -325,6 +333,14 @@ core.print_info() {
 	local msg="$1"
 
 	printf '%s\n' "Info: ${FUNCNAME[1]}${msg:+": "}$msg"
+}
+
+# @description Use when a serious fault occurs. It will print the current ERR (if it exists)
+core.panic() {
+	if core.err_exists; then
+		core.err_print
+	fi
+	core.print_stacktrace
 }
 
 # @description Determine if color should be printed. Note that this doesn't
