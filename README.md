@@ -27,15 +27,24 @@ It can look redundant (compared to `if ! fn; then :; fi`) to define error functi
 - `core.err_set`
 - `core.err_clear`
 - `core.err_exists`
+- `core.err_print`
+- `core.err_print` (TODO: Make this internal)
 
 ### `print`
 
+- `core.print_stacktrace`
 - `core.print_error`
 - `core.print_warn`
 - `core.print_info`
-- `core.print_stacktrace`
 
 The function `core.print_stacktrace` prints the stack trace. It is recommended to use this with `core.trap_add` (see [example](./docs/api.md#coreprint_stacktrace))
+
+### `misc`
+
+Miscellaneous functions
+
+- `core.panic()`
+- `core.should_output_color()`
 
 This is what it may look like
 
