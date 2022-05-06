@@ -13,10 +13,12 @@ Core functions for any Bash program
 * [core.err_set()](#coreerr_set)
 * [core.err_clear()](#coreerr_clear)
 * [core.err_exists()](#coreerr_exists)
+* [core.err_print()](#coreerr_print)
 * [core.print_stacktrace()](#coreprint_stacktrace)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
 * [core.print_info()](#coreprint_info)
+* [core.panic()](#corepanic)
 * [core.should_output_color()](#coreshould_output_color)
 * [core.get_package_info()](#coreget_package_info)
 * [core.init()](#coreinit)
@@ -126,6 +128,10 @@ _does_ exist
 
 _Function has no arguments._
 
+### core.err_print()
+
+Prints the current error stored
+
 ### core.print_stacktrace()
 
 Prints stacktrace
@@ -166,6 +172,10 @@ Print an informative message to standard output
 #### Arguments
 
 * **$1** (string): message
+
+### core.panic()
+
+Use when a serious fault occurs. It will print the current ERR (if it exists)
 
 ### core.should_output_color()
 
