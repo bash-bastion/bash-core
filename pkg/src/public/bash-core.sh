@@ -321,9 +321,9 @@ core.panic() {
 	fi
 
 	if core.err_exists; then
-		core.err_print
+		core.util.err_print
 	fi
-	core.util.err_print
+	core.print_stacktrace
 	exit "$code"
 }
 
