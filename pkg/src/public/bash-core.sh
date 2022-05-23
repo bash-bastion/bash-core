@@ -327,6 +327,13 @@ core.print_info_fn() {
 	printf '%s\n' "Info: ${FUNCNAME[1]}${msg:+": "}$msg"
 }
 
+# @description Print a error message to standard error and die
+# @arg $1 string message
+core.print_die() {
+	core.print_error "$1"
+	exit 1
+}
+
 # @description Print an error message to standard error
 # @arg $1 string message
 core.print_error() {
