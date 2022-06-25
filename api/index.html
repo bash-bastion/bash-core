@@ -223,7 +223,8 @@
 </ul>
 <h3 id="coretrap_add">core.trap_add()</h3>
 <p>Adds a handler for a particular <code>trap</code> signal or event. Noticably,
-unlike the 'builtin' trap, this does not override any other existing handlers</p>
+unlike the 'builtin' trap, this does not override any other existing handlers. The first argument
+to the handler is the exit code of the last command that ran before the particular 'trap'</p>
 <h4 id="example">Example</h4>
 <pre><code class="language-bash">some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
 core.trap_add 'some_handler' 'USR1'
@@ -302,9 +303,11 @@ This means any <code>core.err_exists</code> calls after this <em>will</em> <code
 <p>Prints stacktrace</p>
 <h4 id="example_4">Example</h4>
 <pre><code class="language-bash">err_handler() {
-  local exit_code=$?
+  local exit_code=$1 # Note that this isn't `$?`
   core.print_stacktrace
-  exit $exit_code
+
+  # Note that we're not doing `exit $exit_code` because
+  # that is handled automatically
 }
 core.trap_add 'err_handler' ERR
 </code></pre>
