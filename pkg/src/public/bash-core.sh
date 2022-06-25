@@ -308,7 +308,7 @@ core.print_stacktrace() {
 core.print_error_fn() {
 	local msg="$1"
 
-	printf '%s\n' "Error: ${FUNCNAME[1]}${msg:+": "}$msg" >&2
+	core.print_error "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
 
 # @description Print a warning message to standard error
@@ -316,7 +316,7 @@ core.print_error_fn() {
 core.print_warn_fn() {
 	local msg="$1"
 
-	printf '%s\n' "Warn: ${FUNCNAME[1]}${msg:+": "}$msg" >&2
+	core.print_warn "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
 
 # @description Print an informative message to standard output
@@ -324,7 +324,7 @@ core.print_warn_fn() {
 core.print_info_fn() {
 	local msg="$1"
 
-	printf '%s\n' "Info: ${FUNCNAME[1]}${msg:+": "}$msg"
+	core.print_info "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
 
 # @description Print a error message to standard error and die
@@ -339,7 +339,11 @@ core.print_die() {
 core.print_error() {
 	local msg="$1"
 
-	printf '%s\n' "Error${msg:+": "}$msg" >&2
+	if core.private.should_print_color 2; then
+		printf "\033[1;31m%s:\033[0m %s\n" 'Error' "$msg" >&2
+	else
+		printf "%s: %s\n" 'Error' "$msg" >&2
+	fi
 }
 
 # @description Print a warning message to standard error
@@ -347,7 +351,11 @@ core.print_error() {
 core.print_warn() {
 	local msg="$1"
 
-	printf '%s\n' "Warn${msg:+": "}$msg" >&2
+	if core.private.should_print_color 2; then
+		printf "\033[1;33m%s:\033[0m %s\n" 'Warn' "$msg" >&2
+	else
+		printf "%s: %s\n" 'Warn' "$msg" >&2
+	fi
 }
 
 # @description Print an informative message to standard output
@@ -355,7 +363,11 @@ core.print_warn() {
 core.print_info() {
 	local msg="$1"
 
-	printf '%s\n' "Info${msg:+": "}$msg"
+	if core.private.should_print_color 1; then
+		printf "\033[1;32m%s:\033[0m %s\n" 'Info' "$msg" >&2
+	else
+		printf "%s: %s\n" 'Info' "$msg" >&2
+	fi
 }
 
 # @description (DEPRECATED). Determine if color should be printed. Note that this doesn't
