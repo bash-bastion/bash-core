@@ -40,6 +40,9 @@ core.private.util.err_print() {
 	printf '%s\n' "  ERR: $ERR" >&2
 }
 
+# @description Determine if should print color, given a file descriptor
+# @arg 1 File descriptor for terminal check
+# @internal
 core.private.should_print_color() {
 	local fd="$1"
 
