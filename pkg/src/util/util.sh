@@ -35,6 +35,37 @@ core.private.util.trap_handler_common() {
 	done; unset trap_func
 }
 
+core.private.util.validate_args() {
+	local function="$1"
+	local arg_count="$2"
+
+	if [ -z "$function" ]; then
+		core.panic 'First argument must not be empty'
+	fi
+
+	if ((arg_count <= 1)); then
+		core.panic 'Must specify at least one signal'
+	fi
+}
+
+core.private.util.validate_signal() {
+	local function="$1"
+	local signal_spec="$2"
+
+	if [ -z "$signal_spec" ]; then
+		core.panic 'Signal must not be an empty string'
+	fi
+
+	local regex='^[0-9]+$'
+	if [[ "$signal_spec" =~ $regex ]]; then
+		core.panic 'Passing numbers for the signal specs is prohibited'
+	fi; unset -v regex
+	signal_spec="${signal_spec#SIG}"
+	if ! declare -f "$function" &>/dev/null; then
+		core.panic "Function '$function' is not defined"
+	fi
+}
+
 # @description Prints the current error stored
 # @internal
 core.private.util.err_print() {

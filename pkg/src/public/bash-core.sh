@@ -19,29 +19,10 @@ core.trap_add() {
 	fi
 	local function="$1"
 
-	# Validation
-	if [ -z "$function" ]; then
-		core.panic 'First argument must not be empty'
-	fi
-
-	if (($# <= 1)); then
-		core.panic 'Must specify at least one signal'
-	fi
+	core.private.util.validate_args "$function" $#
 	for signal_spec in "${@:2}"; do
-		if [ -z "$signal_spec" ]; then
-			core.panic 'Signal must not be an empty string'
-		fi
+		core.private.util.validate_signal "$function" "$signal_spec"
 
-		local regex='^[0-9]+$'
-		if [[ "$signal_spec" =~ $regex ]]; then
-			core.panic 'Passing numbers for the signal specs is prohibited'
-		fi; unset regex
-		signal_spec=${signal_spec#SIG}
-		if ! declare -f "$function" &>/dev/null; then
-			core.panic "Function '$function' is not defined"
-		fi
-
-		# Start
 		___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
 
 		# rho (WET)
@@ -80,29 +61,10 @@ core.trap_remove() {
 	fi
 	local function="$1"
 
-	# Validation
-	if [ -z "$function" ]; then
-		core.panic 'First argument must not be empty'
-	fi
-
-	if (($# <= 1)); then
-		core.panic 'Must specify at least one signal'
-	fi
+	core.private.util.validate_args "$function" $#
 	for signal_spec in "${@:2}"; do
-		if [ -z "$signal_spec" ]; then
-			core.panic 'Signal must not be an empty string'
-		fi
+		core.private.util.validate_signal "$function" "$signal_spec"
 
-		local regex='^[0-9]+$'
-		if [[ "$signal_spec" =~ $regex ]]; then
-			core.panic 'Passing numbers for the signal specs is prohibited'
-		fi; unset regex
-		signal_spec="${signal_spec#SIG}"
-		if ! declare -f "$function" &>/dev/null; then
-			core.panic "Function '$function' is not defined"
-		fi
-
-		# Start
 		local -a trap_handlers=()
 		local new_trap_handlers=
 		IFS=$'\x1C' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
