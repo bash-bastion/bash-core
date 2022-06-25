@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Edwin Kofler" /><link rel="canonical" href="https://hyperupcall.github.io/bash-core/api/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>bash-core - bash-core</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "bash-core";
+        var mkdocs_page_input_path = "api.md";
+        var mkdocs_page_url = "/bash-core/api/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> bash-core
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">bash-core</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#index">Index</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#coretrap_add">core.trap_add()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example">Example</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coretrap_remove">core.trap_remove()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example_1">Example</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_1">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreshopt_push">core.shopt_push()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example_2">Example</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_2">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreshopt_pop">core.shopt_pop()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example_3">Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreerr_set">core.err_set()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_3">Arguments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#variables-set">Variables set</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreerr_clear">core.err_clear()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#variables-set_1">Variables set</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreerr_exists">core.err_exists()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_stacktrace">core.print_stacktrace()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#example_4">Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_error">core.print_error()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_4">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_warn">core.print_warn()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_5">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_info">core.print_info()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_6">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#corepanic">core.panic()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreshould_output_color">core.should_output_color()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreget_package_info">core.get_package_info()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_7">Arguments</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#variables-set_2">Variables set</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreinit">core.init()</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#corestacktrace_print">core.stacktrace_print()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">bash-core</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li><li>bash-core</li>
+    <li class="wy-breadcrumbs-aside">
+        <a href="https://github.com/hyperupcall/bash-core/edit/main/docs/api.md"
+          class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="bash-core">bash-core</h1>
+<h2 id="overview">Overview</h2>
+<p>Core functions for any Bash program</p>
+<h2 id="index">Index</h2>
+<ul>
+<li><a href="#coretrap_add">core.trap_add()</a></li>
+<li><a href="#coretrap_remove">core.trap_remove()</a></li>
+<li><a href="#coreshopt_push">core.shopt_push()</a></li>
+<li><a href="#coreshopt_pop">core.shopt_pop()</a></li>
+<li><a href="#coreerr_set">core.err_set()</a></li>
+<li><a href="#coreerr_clear">core.err_clear()</a></li>
+<li><a href="#coreerr_exists">core.err_exists()</a></li>
+<li><a href="#coreprint_stacktrace">core.print_stacktrace()</a></li>
+<li><a href="#coreprint_error">core.print_error()</a></li>
+<li><a href="#coreprint_warn">core.print_warn()</a></li>
+<li><a href="#coreprint_info">core.print_info()</a></li>
+<li><a href="#corepanic">core.panic()</a></li>
+<li><a href="#coreshould_output_color">core.should_output_color()</a></li>
+<li><a href="#coreget_package_info">core.get_package_info()</a></li>
+<li><a href="#coreinit">core.init()</a></li>
+<li><a href="#corestacktrace_print">core.stacktrace_print()</a></li>
+</ul>
+<h3 id="coretrap_add">core.trap_add()</h3>
+<p>Adds a handler for a particular <code>trap</code> signal or event. Noticably,
+unlike the 'builtin' trap, this does not override any other existing handlers</p>
+<h4 id="example">Example</h4>
+<pre><code class="language-bash">some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
+core.trap_add 'some_handler' 'USR1'
+kill -USR1 $$
+core.trap_remove 'some_handler' 'USR1'
+</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): Function to execute on an event. Integers are forbiden</li>
+<li><strong>$2</strong> (string): Event signal</li>
+</ul>
+<h3 id="coretrap_remove">core.trap_remove()</h3>
+<p>Removes a handler for a particular <code>trap</code> signal or event. Currently,
+if the function doest not exist, it prints an error</p>
+<h4 id="example_1">Example</h4>
+<pre><code class="language-bash">some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
+core.trap_add 'some_handler' 'USR1'
+kill -USR1 $$
+core.trap_remove 'some_handler' 'USR1'
+</code></pre>
+<h4 id="arguments_1">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): Function to remove</li>
+<li><strong>$2</strong> (string): Signal that the function executed on</li>
+</ul>
+<h3 id="coreshopt_push">core.shopt_push()</h3>
+<p>Modifies current shell options and pushes information to stack, so
+it can later be easily undone. Note that it does not check to see if your Bash
+version supports the option</p>
+<h4 id="example_2">Example</h4>
+<pre><code class="language-bash">core.shopt_push -s extglob
+[[ 'variable' == @(foxtrot|golf|echo|variable) ]] &amp;&amp; printf '%s\n' 'Woof!'
+core.shopt_pop
+</code></pre>
+<h4 id="arguments_2">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): Name of shopt action. Can either be <code>-u</code> or <code>-s</code></li>
+<li><strong>$2</strong> (string): Name of shopt name</li>
+</ul>
+<h3 id="coreshopt_pop">core.shopt_pop()</h3>
+<p>Modifies current shell options based on most recent item added to stack.</p>
+<h4 id="example_3">Example</h4>
+<pre><code class="language-bash">core.shopt_push -s extglob
+[[ 'variable' == @(foxtrot|golf|echo|variable) ]] &amp;&amp; printf '%s\n' 'Woof!'
+core.shopt_pop
+</code></pre>
+<p><em>Function has no arguments.</em></p>
+<h3 id="coreerr_set">core.err_set()</h3>
+<p>Sets an error.</p>
+<h4 id="arguments_3">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (Error): code</li>
+<li><strong>$2</strong> (Error): message</li>
+</ul>
+<h4 id="variables-set">Variables set</h4>
+<ul>
+<li><strong>number</strong> (ERRCODE): Error code</li>
+<li><strong>string</strong> (ERR): Error message</li>
+</ul>
+<h3 id="coreerr_clear">core.err_clear()</h3>
+<p>Clears any of the global error state (sets to empty string).
+This means any <code>core.err_exists</code> calls after this <em>will</em> <code>return 1</code></p>
+<p><em>Function has no arguments.</em></p>
+<h4 id="variables-set_1">Variables set</h4>
+<ul>
+<li><strong>number</strong> (ERRCODE): Error code</li>
+<li><strong>string</strong> (ERR): Error message</li>
+</ul>
+<h3 id="coreerr_exists">core.err_exists()</h3>
+<p>Checks if an error exists. If <code>ERR</code> is not empty, then an error
+<em>does</em> exist</p>
+<p><em>Function has no arguments.</em></p>
+<h3 id="coreprint_stacktrace">core.print_stacktrace()</h3>
+<p>Prints stacktrace</p>
+<h4 id="example_4">Example</h4>
+<pre><code class="language-bash">err_handler() {
+  local exit_code=$?
+  core.print_stacktrace
+  exit $exit_code
+}
+core.trap_add 'err_handler' ERR
+</code></pre>
+<p><em>Function has no arguments.</em></p>
+<h3 id="coreprint_error">core.print_error()</h3>
+<p>Print an error message to standard error</p>
+<h4 id="arguments_4">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="coreprint_warn">core.print_warn()</h3>
+<p>Print a warning message to standard error</p>
+<h4 id="arguments_5">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="coreprint_info">core.print_info()</h3>
+<p>Print an informative message to standard output</p>
+<h4 id="arguments_6">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="corepanic">core.panic()</h3>
+<p>Use when a serious fault occurs. It will print the current ERR (if it exists)</p>
+<h3 id="coreshould_output_color">core.should_output_color()</h3>
+<p>Determine if color should be printed. Note that this doesn't
+use tput because simple environment variable checking heuristics suffice</p>
+<h3 id="coreget_package_info">core.get_package_info()</h3>
+<p>Gets information from a particular package. If the key does not exist, then the value
+is an empty string</p>
+<h4 id="arguments_7">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): The <code>$BASALT_PACKAGE_DIR</code> of the caller</li>
+</ul>
+<h4 id="variables-set_2">Variables set</h4>
+<ul>
+<li><strong>directory</strong> (string): The full path to the directory</li>
+</ul>
+<h3 id="coreinit">core.init()</h3>
+<p>(DEPRECATED) Initiates global variables used by other functions. Deprecated as
+this function is called automatically by functions that use global variables</p>
+<p><em>Function has no arguments.</em></p>
+<h3 id="corestacktrace_print">core.stacktrace_print()</h3>
+<p>(DEPRECATED) Prints stacktrace</p>
+<h4 id="see-also">See also</h4>
+<ul>
+<li><a href="#coreprint_stacktrace">core.print_stacktrace</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>© Edwin Kofler</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/hyperupcall/bash-core" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
