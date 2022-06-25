@@ -14,7 +14,7 @@
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
 	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.util.init
+		core.private.util.init
 	fi
 	local function="$1"
 
@@ -48,7 +48,7 @@ core.trap_add() {
 		printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
 
 		if ! eval "$global_trap_handler_name() {
-		core.util.trap_handler_common '$signal_spec'
+		core.private.util.trap_handler_common '$signal_spec'
 	}"; then
 			core.panic 'Could not eval function'
 		fi
@@ -68,7 +68,7 @@ core.trap_add() {
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
 	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.util.init
+		core.private.util.init
 	fi
 	local function="$1"
 
@@ -130,7 +130,7 @@ core.trap_remove() {
 #   core.shopt_pop
 core.shopt_push() {
 	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.util.init
+		core.private.util.init
 	fi
 	local shopt_action="$1"
 	local shopt_name="$2"
@@ -177,7 +177,7 @@ core.shopt_push() {
 #   core.shopt_pop
 core.shopt_pop() {
 	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.util.init
+		core.private.util.init
 	fi
 
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
@@ -255,7 +255,7 @@ core.panic() {
 	fi
 
 	if core.err_exists; then
-		core.util.err_print
+		core.private.util.err_print
 	fi
 	core.print_stacktrace
 	exit "$code"
@@ -419,7 +419,7 @@ core.get_package_info() {
 # this function is called automatically by functions that use global variables
 # @noargs
 core.init() {
-	core.util.init
+	core.private.util.init
 }
 
 # @description (DEPRECATED) Prints stacktrace

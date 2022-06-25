@@ -1,7 +1,7 @@
 # shellcheck shell=bash
 
 # @internal
-core.util.init() {
+core.private.util.init() {
 	if [ ${___global_bash_core_has_init__+x} ]; then
 		return
 	fi
@@ -12,7 +12,7 @@ core.util.init() {
 }
 
 # @internal
-core.util.trap_handler_common() {
+core.private.util.trap_handler_common() {
 	local signal_spec="$1"
 
 	local trap_handlers=
@@ -33,7 +33,7 @@ core.util.trap_handler_common() {
 }
 
 # @description Prints the current error stored
-core.util.err_print() {
+core.private.util.err_print() {
 	printf '%s\n' 'Error found:'
 	printf '%s\n' "  ERRCODE: $ERRCODE" >&2
 	printf '%s\n' "  ERR: $ERR" >&2
