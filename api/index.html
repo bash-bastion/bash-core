@@ -352,11 +352,12 @@ core.trap_add 'err_handler' ERR
 <li><strong>$1</strong> (string): message</li>
 </ul>
 <h3 id="coreshould_output_color">core.should_output_color()</h3>
-<p>Determine if color should be printed. Note that this doesn't
-use tput because simple environment variable checking heuristics suffice</p>
+<p>(DEPRECATED). Determine if color should be printed. Note that this doesn't
+use tput because simple environment variable checking heuristics suffice. Deprecated because this code
+has been moved to bash-std</p>
 <h3 id="coreget_package_info">core.get_package_info()</h3>
-<p>Gets information from a particular package. If the key does not exist, then the value
-is an empty string</p>
+<p>(DEPRECATED) Gets information from a particular package. If the key does not exist, then the value
+is an empty string. Deprecated as this code has been moved to bash-std</p>
 <h4 id="arguments_11">Arguments</h4>
 <ul>
 <li><strong>$1</strong> (string): The <code>$BASALT_PACKAGE_DIR</code> of the caller</li>
