@@ -358,8 +358,9 @@ core.print_info() {
 	printf '%s\n' "Info${msg:+": "}$msg"
 }
 
-# @description Determine if color should be printed. Note that this doesn't
-# use tput because simple environment variable checking heuristics suffice
+# @description (DEPRECATED). Determine if color should be printed. Note that this doesn't
+# use tput because simple environment variable checking heuristics suffice. Deprecated because this code
+# has been moved to bash-std
 core.should_output_color() {
 	# https://no-color.org
 	if [ ${NO_COLOR+x} ]; then
@@ -390,8 +391,8 @@ core.should_output_color() {
 	return 1
 }
 
-# @description Gets information from a particular package. If the key does not exist, then the value
-# is an empty string
+# @description (DEPRECATED) Gets information from a particular package. If the key does not exist, then the value
+# is an empty string. Deprecated as this code has been moved to bash-std
 # @arg $1 string The `$BASALT_PACKAGE_DIR` of the caller
 # @set directory string The full path to the directory
 core.get_package_info() {

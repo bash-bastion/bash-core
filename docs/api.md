@@ -210,13 +210,14 @@ Print an informative message to standard output
 
 ### core.should_output_color()
 
-Determine if color should be printed. Note that this doesn't
-use tput because simple environment variable checking heuristics suffice
+(DEPRECATED). Determine if color should be printed. Note that this doesn't
+use tput because simple environment variable checking heuristics suffice. Deprecated because this code
+has been moved to bash-std
 
 ### core.get_package_info()
 
-Gets information from a particular package. If the key does not exist, then the value
-is an empty string
+(DEPRECATED) Gets information from a particular package. If the key does not exist, then the value
+is an empty string. Deprecated as this code has been moved to bash-std
 
 #### Arguments
 
