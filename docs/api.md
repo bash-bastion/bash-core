@@ -30,7 +30,8 @@ Core functions for any Bash program
 ### core.trap_add()
 
 Adds a handler for a particular `trap` signal or event. Noticably,
-unlike the 'builtin' trap, this does not override any other existing handlers
+unlike the 'builtin' trap, this does not override any other existing handlers. The first argument
+to the handler is the exit code of the last command that ran before the particular 'trap'
 
 #### Example
 
@@ -143,9 +144,11 @@ Prints stacktrace
 
 ```bash
 err_handler() {
-  local exit_code=$?
+  local exit_code=$1 # Note that this isn't `$?`
   core.print_stacktrace
-  exit $exit_code
+  
+  # Note that we're not doing `exit $exit_code` because
+  # that is handled automatically
 }
 core.trap_add 'err_handler' ERR
 ```

@@ -4,7 +4,8 @@
 # @description Core functions for any Bash program
 
 # @description Adds a handler for a particular `trap` signal or event. Noticably,
-# unlike the 'builtin' trap, this does not override any other existing handlers
+# unlike the 'builtin' trap, this does not override any other existing handlers. The first argument
+# to the handler is the exit code of the last command that ran before the particular 'trap'
 # @arg $1 string Function to execute on an event. Integers are forbiden
 # @arg $2 string Event signal
 # @example
@@ -48,9 +49,16 @@ core.trap_add() {
 		printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
 
 		if ! eval "$global_trap_handler_name() {
-		core.private.util.trap_handler_common '$signal_spec'
+		local ___exit_code_original=\$?
+		if core.private.util.trap_handler_common '$signal_spec' \"\$___exit_code_original\"; then
+			return \$___exit_code_original
+		else
+			local ___exit_code_user=\$?
+			core.print_error_fn \"User-provided trap handler spectacularly failed with exit code \$___exit_code_user\"
+			return \$___exit_code_user
+		fi
 	}"; then
-			core.panic 'Could not eval function'
+			core.panic 'Failed to eval function'
 		fi
 		# shellcheck disable=SC2064
 		trap "$global_trap_handler_name" "$signal_spec"
@@ -265,9 +273,11 @@ core.panic() {
 # @noargs
 # @example
 #  err_handler() {
-#    local exit_code=$?
+#    local exit_code=$1 # Note that this isn't `$?`
 #    core.print_stacktrace
-#    exit $exit_code
+#    
+#    # Note that we're not doing `exit $exit_code` because
+#    # that is handled automatically
 #  }
 #  core.trap_add 'err_handler' ERR
 core.print_stacktrace() {
