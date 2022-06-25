@@ -84,7 +84,8 @@ core.trap_remove() {
 
 		# rho (WET)
 		local global_trap_handler_name=
-		printf -v global_trap_handler_name '%q' "___global_trap_${signal_spec}_handler___"
+		printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
+
 		unset -f "$global_trap_handler_name"
 	done
 }
@@ -214,14 +215,17 @@ core.err_exists() {
 # @description Use when a serious fault occurs. It will print the current ERR (if it exists)
 core.panic() {
 	local code='1'
-
 	if [[ $1 =~ [0-9]+ ]]; then
 		code=$1
 	elif [ -n "$1" ]; then
 		if [ -n "$2" ]; then
 			code=$2
 		fi
-		printf '%s\n' "Panic: $1" >&2
+		if core.private.should_print_color 2; then
+			printf "\033[1;31m\033[4m%s:\033[0m %s\n" 'Panic' "$1" >&2
+		else
+			printf "%s: %s\n" 'Panic' "$1" >&2
+		fi
 	fi
 
 	if core.err_exists; then
@@ -346,29 +350,13 @@ core.print_info() {
 # use tput because simple environment variable checking heuristics suffice. Deprecated because this code
 # has been moved to bash-std
 core.should_output_color() {
-	# https://no-color.org
-	if [ ${NO_COLOR+x} ]; then
+	local fd="$1"
+
+	if [[ ${NO_COLOR+x} || "$TERM" = 'dumb' ]]; then
 		return 1
 	fi
 
-	# FIXME
-	# # 0 => 2 colors
-	# # 1 => 16 colors
-	# # 2 => 256 colors
-	# # 3 => 16,777,216 colors
-	# if [[ -v FORCE_COLOR ]]; then
-	# 	return 0
-	# fi
-
-	if [ "$COLORTERM" = "truecolor" ] || [ "$COLORTERM" = "24bit" ]; then
-		return 0
-	fi
-
-	if [ "$TERM" = 'dumb' ]; then
-		return 1
-	fi
-
-	if [ -t 0 ]; then
+	if [ -t "$fd" ]; then
 		return 0
 	fi
 

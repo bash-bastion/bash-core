@@ -30,7 +30,7 @@ core.private.util.trap_handler_common() {
 				return $?
 			fi
 		else
-			printf "%s\n" "Warn: core.trap_add: Function '$trap_handler' registered for signal '$signal_spec' no longer exists. Skipping" >&2
+			core.print_warn "Trap handler function '$trap_handler' that was registered for signal '$signal_spec' no longer exists. Skipping" >&2
 		fi
 	done; unset trap_func
 }
