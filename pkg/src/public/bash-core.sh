@@ -45,7 +45,7 @@ core.trap_add() {
 
 		# rho (WET)
 		local global_trap_handler_name=
-		printf -v global_trap_handler_name '%q' "core.trap_handler_${signal_spec}"
+		printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
 
 		if ! eval "$global_trap_handler_name() {
 		core.private.util.trap_handler_common '$signal_spec'
