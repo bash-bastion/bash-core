@@ -40,6 +40,10 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">bash-core</a>
+                </li>
+              </ul>
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">bash-core</a>
     <ul class="current">
@@ -93,37 +97,61 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#coreerr_exists">core.err_exists()</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#corepanic">core.panic()</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#coreprint_stacktrace">core.print_stacktrace()</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#example_4">Example</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#coreprint_error">core.print_error()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_error_fn">core.print_error_fn()</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#arguments_4">Arguments</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#coreprint_warn">core.print_warn()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_warn_fn">core.print_warn_fn()</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#arguments_5">Arguments</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#coreprint_info">core.print_info()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_info_fn">core.print_info_fn()</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#arguments_6">Arguments</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#corepanic">core.panic()</a>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_die">core.print_die()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_7">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_error">core.print_error()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_8">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_warn">core.print_warn()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_9">Arguments</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coreprint_info">core.print_info()</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_10">Arguments</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#coreshould_output_color">core.should_output_color()</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#coreget_package_info">core.get_package_info()</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#arguments_7">Arguments</a>
+    <li class="toctree-l4"><a class="reference internal" href="#arguments_11">Arguments</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#variables-set_2">Variables set</a>
     </li>
@@ -179,11 +207,15 @@
 <li><a href="#coreerr_set">core.err_set()</a></li>
 <li><a href="#coreerr_clear">core.err_clear()</a></li>
 <li><a href="#coreerr_exists">core.err_exists()</a></li>
+<li><a href="#corepanic">core.panic()</a></li>
 <li><a href="#coreprint_stacktrace">core.print_stacktrace()</a></li>
+<li><a href="#coreprint_error_fn">core.print_error_fn()</a></li>
+<li><a href="#coreprint_warn_fn">core.print_warn_fn()</a></li>
+<li><a href="#coreprint_info_fn">core.print_info_fn()</a></li>
+<li><a href="#coreprint_die">core.print_die()</a></li>
 <li><a href="#coreprint_error">core.print_error()</a></li>
 <li><a href="#coreprint_warn">core.print_warn()</a></li>
 <li><a href="#coreprint_info">core.print_info()</a></li>
-<li><a href="#corepanic">core.panic()</a></li>
 <li><a href="#coreshould_output_color">core.should_output_color()</a></li>
 <li><a href="#coreget_package_info">core.get_package_info()</a></li>
 <li><a href="#coreinit">core.init()</a></li>
@@ -264,6 +296,8 @@ This means any <code>core.err_exists</code> calls after this <em>will</em> <code
 <p>Checks if an error exists. If <code>ERR</code> is not empty, then an error
 <em>does</em> exist</p>
 <p><em>Function has no arguments.</em></p>
+<h3 id="corepanic">core.panic()</h3>
+<p>Use when a serious fault occurs. It will print the current ERR (if it exists)</p>
 <h3 id="coreprint_stacktrace">core.print_stacktrace()</h3>
 <p>Prints stacktrace</p>
 <h4 id="example_4">Example</h4>
@@ -275,33 +309,55 @@ This means any <code>core.err_exists</code> calls after this <em>will</em> <code
 core.trap_add 'err_handler' ERR
 </code></pre>
 <p><em>Function has no arguments.</em></p>
-<h3 id="coreprint_error">core.print_error()</h3>
+<h3 id="coreprint_error_fn">core.print_error_fn()</h3>
 <p>Print an error message to standard error</p>
 <h4 id="arguments_4">Arguments</h4>
 <ul>
 <li><strong>$1</strong> (string): message</li>
 </ul>
-<h3 id="coreprint_warn">core.print_warn()</h3>
+<h3 id="coreprint_warn_fn">core.print_warn_fn()</h3>
 <p>Print a warning message to standard error</p>
 <h4 id="arguments_5">Arguments</h4>
 <ul>
 <li><strong>$1</strong> (string): message</li>
 </ul>
-<h3 id="coreprint_info">core.print_info()</h3>
+<h3 id="coreprint_info_fn">core.print_info_fn()</h3>
 <p>Print an informative message to standard output</p>
 <h4 id="arguments_6">Arguments</h4>
 <ul>
 <li><strong>$1</strong> (string): message</li>
 </ul>
-<h3 id="corepanic">core.panic()</h3>
-<p>Use when a serious fault occurs. It will print the current ERR (if it exists)</p>
+<h3 id="coreprint_die">core.print_die()</h3>
+<p>Print a error message to standard error and die</p>
+<h4 id="arguments_7">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="coreprint_error">core.print_error()</h3>
+<p>Print an error message to standard error</p>
+<h4 id="arguments_8">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="coreprint_warn">core.print_warn()</h3>
+<p>Print a warning message to standard error</p>
+<h4 id="arguments_9">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
+<h3 id="coreprint_info">core.print_info()</h3>
+<p>Print an informative message to standard output</p>
+<h4 id="arguments_10">Arguments</h4>
+<ul>
+<li><strong>$1</strong> (string): message</li>
+</ul>
 <h3 id="coreshould_output_color">core.should_output_color()</h3>
 <p>Determine if color should be printed. Note that this doesn't
 use tput because simple environment variable checking heuristics suffice</p>
 <h3 id="coreget_package_info">core.get_package_info()</h3>
 <p>Gets information from a particular package. If the key does not exist, then the value
 is an empty string</p>
-<h4 id="arguments_7">Arguments</h4>
+<h4 id="arguments_11">Arguments</h4>
 <ul>
 <li><strong>$1</strong> (string): The <code>$BASALT_PACKAGE_DIR</code> of the caller</li>
 </ul>
@@ -322,6 +378,9 @@ this function is called automatically by functions that use global variables</p>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="bash-core"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
 
   <hr/>
 
@@ -347,6 +406,8 @@ this function is called automatically by functions that use global variables</p>
           <a href="https://github.com/hyperupcall/bash-core" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
         </span>
     
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
   </span>
