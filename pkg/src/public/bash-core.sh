@@ -279,7 +279,17 @@ core.print_stacktrace() {
 	fi
 } >&2
 
-# @description Print an error message to standard error
+# @description Print a fatal error message including the function name of the callee
+# to standard error
+# @arg $1 string message
+core.print_fatal_fn() {
+	local msg="$1"
+
+	core.print_fatal "${FUNCNAME[1]}()${msg:+": "}$msg"
+}
+
+# @description Print an error message including the function name of the callee
+# to standard error
 # @arg $1 string message
 core.print_error_fn() {
 	local msg="$1"
@@ -287,7 +297,8 @@ core.print_error_fn() {
 	core.print_error "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
 
-# @description Print a warning message to standard error
+# @description Print a warning message including the function name of the callee
+# to standard error
 # @arg $1 string message
 core.print_warn_fn() {
 	local msg="$1"
@@ -295,19 +306,40 @@ core.print_warn_fn() {
 	core.print_warn "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
 
-# @description Print an informative message to standard output
+# @description Print an informative message including the function name of the callee
+# to standard output
 # @arg $1 string message
 core.print_info_fn() {
 	local msg="$1"
 
 	core.print_info "${FUNCNAME[1]}()${msg:+": "}$msg"
 }
+# @description Print a debug message including the function name of the callee
+# to standard output
+# @arg $1 string message
+core.print_debug_fn() {
+	local msg="$1"
+
+	core.print_debug "${FUNCNAME[1]}()${msg:+": "}$msg"
+}
 
 # @description Print a error message to standard error and die
 # @arg $1 string message
 core.print_die() {
-	core.print_error "$1"
+	core.print_fatal "$1"
 	exit 1
+}
+
+# @description Print a fatal error message to standard error
+# @arg $1 string message
+core.print_fatal() {
+	local msg="$1"
+
+	if core.private.should_print_color 2; then
+		printf "\033[1;35m%s:\033[0m %s\n" 'Fatal' "$msg" >&2
+	else
+		printf "%s: %s\n" 'Fatal' "$msg" >&2
+	fi
 }
 
 # @description Print an error message to standard error
@@ -343,6 +375,14 @@ core.print_info() {
 		printf "\033[1;32m%s:\033[0m %s\n" 'Info' "$msg" >&2
 	else
 		printf "%s: %s\n" 'Info' "$msg" >&2
+	fi
+}
+
+# @description Print a debug message to standard output if the environment variable "DEBUG" is present
+# @arg $1 string message
+core.print_debug() {
+	if [[ -v DEBUG ]]; then
+		printf "%s: %s\n" 'Debug' "$msg"
 	fi
 }
 

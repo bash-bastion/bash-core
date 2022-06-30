@@ -15,13 +15,17 @@ Core functions for any Bash program
 * [core.err_exists()](#coreerr_exists)
 * [core.panic()](#corepanic)
 * [core.print_stacktrace()](#coreprint_stacktrace)
+* [core.print_fatal_fn()](#coreprint_fatal_fn)
 * [core.print_error_fn()](#coreprint_error_fn)
 * [core.print_warn_fn()](#coreprint_warn_fn)
 * [core.print_info_fn()](#coreprint_info_fn)
+* [core.print_debug_fn()](#coreprint_debug_fn)
 * [core.print_die()](#coreprint_die)
+* [core.print_fatal()](#coreprint_fatal)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
 * [core.print_info()](#coreprint_info)
+* [core.print_debug()](#coreprint_debug)
 * [core.should_output_color()](#coreshould_output_color)
 * [core.get_package_info()](#coreget_package_info)
 * [core.init()](#coreinit)
@@ -155,9 +159,19 @@ core.trap_add 'err_handler' ERR
 
 _Function has no arguments._
 
+### core.print_fatal_fn()
+
+Print a fatal error message including the function name of the callee
+to standard error
+
+#### Arguments
+
+* **$1** (string): message
+
 ### core.print_error_fn()
 
-Print an error message to standard error
+Print an error message including the function name of the callee
+to standard error
 
 #### Arguments
 
@@ -165,7 +179,8 @@ Print an error message to standard error
 
 ### core.print_warn_fn()
 
-Print a warning message to standard error
+Print a warning message including the function name of the callee
+to standard error
 
 #### Arguments
 
@@ -173,7 +188,17 @@ Print a warning message to standard error
 
 ### core.print_info_fn()
 
-Print an informative message to standard output
+Print an informative message including the function name of the callee
+to standard output
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_debug_fn()
+
+Print a debug message including the function name of the callee
+to standard output
 
 #### Arguments
 
@@ -182,6 +207,14 @@ Print an informative message to standard output
 ### core.print_die()
 
 Print a error message to standard error and die
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_fatal()
+
+Print a fatal error message to standard error
 
 #### Arguments
 
@@ -206,6 +239,14 @@ Print a warning message to standard error
 ### core.print_info()
 
 Print an informative message to standard output
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_debug()
+
+Print a debug message to standard output if the environment variable "DEBUG" is present
 
 #### Arguments
 
