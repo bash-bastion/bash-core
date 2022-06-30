@@ -31,9 +31,11 @@ It can look redundant (compared to `if ! fn; then :; fi`) to define error functi
 ### print
 
 - `core.print_stacktrace`
+- `core.print_fatal`
 - `core.print_error`
 - `core.print_warn`
 - `core.print_info`
+- `core.print_debug`
 
 The function `core.print_stacktrace` prints the stack trace. It is recommended to use this with `core.trap_add` (see [example](./docs/api.md#coreprint_stacktrace))
 
