@@ -82,11 +82,15 @@ core.trap_remove() {
 
 		___global_trap_table___["$signal_spec"]="$new_trap_handlers"
 
-		# rho (WET)
-		local global_trap_handler_name=
-		printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
-
-		unset -f "$global_trap_handler_name"
+		# If there are no more user-provided trap-handlers (for the particular signal spec in the global trap table),
+		# then remove our handler from 'trap'
+		if [ -z "$new_trap_handlers" ]; then
+			# rho (WET)
+			local global_trap_handler_name=
+			printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
+			trap -- "$signal_spec"
+			unset -f "$global_trap_handler_name"
+		fi
 	done
 }
 
