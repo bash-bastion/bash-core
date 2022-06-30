@@ -43,7 +43,7 @@ core.trap_add() {
 		fi
 		# shellcheck disable=SC2064
 		trap "$global_trap_handler_name" "$signal_spec"
-	done
+	done; unset -v signal_spec
 }
 
 # @description Removes a handler for a particular `trap` signal or event. Currently,
@@ -78,7 +78,7 @@ core.trap_remove() {
 			fi
 
 			new_trap_handlers+=$'\x1C'"$trap_handler"
-		done; unset trap_handler
+		done; unset -v trap_handler
 
 		___global_trap_table___["$signal_spec"]="$new_trap_handlers"
 
@@ -91,7 +91,7 @@ core.trap_remove() {
 			trap -- "$signal_spec"
 			unset -f "$global_trap_handler_name"
 		fi
-	done
+	done; unset -v signal_spec
 }
 
 # @description Modifies current shell options and pushes information to stack, so

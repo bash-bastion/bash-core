@@ -32,7 +32,7 @@ core.private.util.trap_handler_common() {
 		else
 			core.print_warn "Trap handler function '$trap_handler' that was registered for signal '$signal_spec' no longer exists. Skipping" >&2
 		fi
-	done; unset trap_func
+	done; unset -v trap_handler
 }
 
 core.private.util.validate_args() {
