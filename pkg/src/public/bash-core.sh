@@ -394,17 +394,9 @@ core.print_debug() {
 # use tput because simple environment variable checking heuristics suffice. Deprecated because this code
 # has been moved to bash-std
 core.should_output_color() {
-	local fd="$1"
-
-	if [[ ${NO_COLOR+x} || "$TERM" = 'dumb' ]]; then
-		return 1
+	if core.private.should_print_color "$@"; then :; else
+		return $?
 	fi
-
-	if [ -t "$fd" ]; then
-		return 0
-	fi
-
-	return 1
 }
 
 # @description (DEPRECATED) Gets information from a particular package. If the key does not exist, then the value
