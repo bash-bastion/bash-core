@@ -15,6 +15,7 @@ Core functions for any Bash program
 * [core.err_exists()](#coreerr_exists)
 * [core.panic()](#corepanic)
 * [core.print_stacktrace()](#coreprint_stacktrace)
+* [core.print_die_fn()](#coreprint_die_fn)
 * [core.print_fatal_fn()](#coreprint_fatal_fn)
 * [core.print_error_fn()](#coreprint_error_fn)
 * [core.print_warn_fn()](#coreprint_warn_fn)
@@ -158,6 +159,15 @@ core.trap_add 'err_handler' ERR
 ```
 
 _Function has no arguments._
+
+### core.print_die_fn()
+
+Print a error message to standard error including the function name
+of the callee to standard error and die
+
+#### Arguments
+
+* **$1** (string): message
 
 ### core.print_fatal_fn()
 

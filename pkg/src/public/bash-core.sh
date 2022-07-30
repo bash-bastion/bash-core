@@ -283,6 +283,15 @@ core.print_stacktrace() {
 	fi
 } >&2
 
+# @description Print a error message to standard error including the function name
+# of the callee to standard error and die
+# @arg $1 string message
+core.print_die_fn() {
+	local msg="$1"
+
+	core.print_die "${FUNCNAME[1]}()${msg:+": "}$msg"
+}
+
 # @description Print a fatal error message including the function name of the callee
 # to standard error
 # @arg $1 string message
