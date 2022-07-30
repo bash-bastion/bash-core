@@ -1,8 +1,9 @@
 [package]
-type = 'bash'
+lang = 'bash'
+type = 'lib'
 name = 'bash-core'
 slug = 'core'
-version = '0.10.2'
+version = '0.11.0'
 authors = ['Edwin Kofler <edwin@kofler.dev>']
 description = 'Core functions for any Bash program'
 
