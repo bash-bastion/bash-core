@@ -60,7 +60,7 @@ core.private.util.validate_signal() {
 	if [[ "$signal_spec" =~ $regex ]]; then
 		core.panic 'Passing numbers for the signal specs is prohibited'
 	fi; unset -v regex
-	signal_spec="${signal_spec#SIG}"
+	signal_spec=${signal_spec#SIG}
 	if ! declare -f "$function" &>/dev/null; then
 		core.panic "Function '$function' is not defined"
 	fi

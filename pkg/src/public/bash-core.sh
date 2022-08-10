@@ -20,6 +20,7 @@ core.trap_add() {
 	local function="$1"
 
 	core.private.util.validate_args "$function" $#
+	local signal_spec=
 	for signal_spec in "${@:2}"; do
 		core.private.util.validate_signal "$function" "$signal_spec"
 
@@ -62,6 +63,7 @@ core.trap_remove() {
 	local function="$1"
 
 	core.private.util.validate_args "$function" $#
+	local signal_spec=
 	for signal_spec in "${@:2}"; do
 		core.private.util.validate_signal "$function" "$signal_spec"
 
