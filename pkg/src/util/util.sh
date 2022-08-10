@@ -1,5 +1,6 @@
 # shellcheck shell=bash
 
+# @description Initialize global variables required for shopt and trap functions
 # @internal
 core.private.util.init() {
 	if [ ${___global_bash_core_has_init__+x} ]; then
@@ -11,6 +12,7 @@ core.private.util.init() {
 	declare -ga ___global_shopt_stack___=()
 }
 
+# @description Function that runs handlers for a particular signal
 # @internal
 core.private.util.trap_handler_common() {
 	local signal_spec="$1"
@@ -35,6 +37,7 @@ core.private.util.trap_handler_common() {
 	done; unset -v trap_handler
 }
 
+# @internal
 core.private.util.validate_args() {
 	local function="$1"
 	local arg_count="$2"
@@ -48,6 +51,7 @@ core.private.util.validate_args() {
 	fi
 }
 
+# @internal
 core.private.util.validate_signal() {
 	local function="$1"
 	local signal_spec="$2"
@@ -66,7 +70,7 @@ core.private.util.validate_signal() {
 	fi
 }
 
-# @description Prints the current error stored
+# @description Prints the current errors
 # @internal
 core.private.util.err_print() {
 	printf '%s\n' 'Error found:'
