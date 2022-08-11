@@ -5,8 +5,6 @@ basalt.package-init || exit
 basalt.package-load || exit
 basalt.load 'github.com/hyperupcall/bats-all' 'load.bash'
 
-load './util/test_util.sh'
-
 setup() {
 	cd "$BATS_TEST_TMPDIR"
 }

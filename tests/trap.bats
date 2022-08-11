@@ -47,7 +47,20 @@ load './util/init.sh'
 	assert_output -p "Passing numbers for the signal specs is prohibited"
 }
 
-@test "core.trap_add adds trap function properly" {
+@test "core.trap_add adds trap function properly 1" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	core.trap_add 'somefunction' 'USR1'
+	kill -USR1 \$\$"
+
+	assert_success
+	assert_output "a"
+}
+
+@test "core.trap_add adds trap function properly 1 (variable)" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
 
@@ -56,6 +69,21 @@ load './util/init.sh'
 }
 
 @test "core.trap_add adds function properly 2" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	somefunction2() { printf '%s\n' 'b'; }
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_add 'somefunction2' 'USR1'
+	kill -USR1 \$\$"
+
+	assert_success
+	assert_output $'a\nb'
+}
+
+@test "core.trap_add adds function properly 2 (variable)" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
@@ -65,7 +93,21 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction\x1Csomefunction2' ]
 }
 
-@test "core.trap_add adds function properly 3" {
+@test "core.trap_add adds function properly 3" {	
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	core.trap_add 'somefunction' 'USR1' 'USR2'
+	kill -USR1 \$\$
+	kill -USR2 \$\$"
+
+	assert_success
+	assert_output $'a\na'
+}
+
+@test "core.trap_add adds function properly 3 (variable)" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1' 'USR2'
 	
@@ -102,7 +144,22 @@ load './util/init.sh'
 	assert_output -p "Function 'nonexistent' is not defined"
 }
 
-@test "core.trap_remove removes trap function properly" {
+@test "core.trap_remove removes trap function properly 1" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_remove 'somefunction' 'USR1'
+	kill -USR1 \$\$"
+
+	assert_failure
+	assert [ "$status" = 138 ] # Matches regular Bash behavior
+	assert_output ''
+}
+
+@test "core.trap_remove removes trap function properly 1 (variable)" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_remove 'somefunction' 'USR1'
@@ -111,6 +168,22 @@ load './util/init.sh'
 }
 
 @test "core.trap_remove removes trap function properly 2" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	somefunction2() { printf '%s\n' 'b'; }
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_add 'somefunction2' 'USR1'
+	core.trap_remove 'somefunction' 'USR1'
+	kill -USR1 \$\$"
+
+	assert_success
+	assert_output 'b'
+}
+
+@test "core.trap_remove removes trap function properly 2 (variable)" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
@@ -122,6 +195,23 @@ load './util/init.sh'
 }
 
 @test "core.trap_add removes function properly 3" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	somefunction2() { printf '%s\n' 'b'; }
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_add 'somefunction' 'USR2'
+	core.trap_remove 'somefunction' 'USR1' 'USR2'
+	kill -USR1 \$\$"
+
+	assert_failure
+	assert [ "$status" = 138 ] # Matches regular Bash behavior
+	assert_output ''
+}
+
+@test "core.trap_add removes function properly 3 (variable)" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_add 'somefunction' 'USR2'
@@ -131,7 +221,24 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR2]}" = '' ]
 }
 
+
 @test "core.trap_remove removes trap function properly 4" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
+	source ./util/init.sh
+	
+	somefunction() { printf '%s\n' 'a'; }
+	somefunction2() { printf '%s\n' 'b'; }
+	core.trap_add 'somefunction' 'USR1'
+	core.trap_add 'somefunction2' 'USR1'
+	core.trap_remove 'somefunction2' 'USR1'
+	kill -USR1 \$\$"
+
+	assert_success
+	assert_output 'a'
+}
+
+@test "core.trap_remove removes trap function properly 4 (variable)" {
 	somefunction() { :; }
 	somefunction2() { :; }
 	core.trap_add 'somefunction' 'USR1'
@@ -142,4 +249,31 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction' ]
 }
 
+@test "handling fails if user-provided trap handler fails" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\"
+	source ./util/init.sh
+	
+	somefunction() { return 33; }
+	core.trap_add 'somefunction' 'USR1'
+	kill -USR1 \$\$
+"
 
+	assert_failure
+	assert_output -p "User-provided trap handler spectacularly failed with exit code 33"
+}
+
+@test "handling fails if user-provided function no longer exists" {
+	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
+	cd \"\$BASALT_PACKAGE_DIR/tests\"
+	source ./util/init.sh
+	
+	somefunction() { return 33; }
+	core.trap_add 'somefunction' 'USR1'
+	unset -f somefunction
+	kill -USR1 \$\$
+"
+
+	assert_success
+	assert_output -p "Trap handler function 'somefunction' that was registered for signal 'USR1' no longer exists"
+}
