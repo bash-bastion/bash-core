@@ -15,13 +15,11 @@ Core functions for any Bash program
 * [core.err_exists()](#coreerr_exists)
 * [core.panic()](#corepanic)
 * [core.print_stacktrace()](#coreprint_stacktrace)
-* [core.print_die_fn()](#coreprint_die_fn)
 * [core.print_fatal_fn()](#coreprint_fatal_fn)
 * [core.print_error_fn()](#coreprint_error_fn)
 * [core.print_warn_fn()](#coreprint_warn_fn)
 * [core.print_info_fn()](#coreprint_info_fn)
 * [core.print_debug_fn()](#coreprint_debug_fn)
-* [core.print_die()](#coreprint_die)
 * [core.print_fatal()](#coreprint_fatal)
 * [core.print_error()](#coreprint_error)
 * [core.print_warn()](#coreprint_warn)
@@ -31,6 +29,8 @@ Core functions for any Bash program
 * [core.get_package_info()](#coreget_package_info)
 * [core.init()](#coreinit)
 * [core.stacktrace_print()](#corestacktrace_print)
+* [core.print_die_fn()](#coreprint_die_fn)
+* [core.print_die()](#coreprint_die)
 
 ### core.trap_add()
 
@@ -160,15 +160,6 @@ core.trap_add 'err_handler' ERR
 
 _Function has no arguments._
 
-### core.print_die_fn()
-
-Print a error message to standard error including the function name
-of the callee to standard error and die
-
-#### Arguments
-
-* **$1** (string): message
-
 ### core.print_fatal_fn()
 
 Print a fatal error message including the function name of the callee
@@ -209,14 +200,6 @@ to standard output
 
 Print a debug message including the function name of the callee
 to standard output
-
-#### Arguments
-
-* **$1** (string): message
-
-### core.print_die()
-
-Print a error message to standard error and die
 
 #### Arguments
 
@@ -295,4 +278,21 @@ _Function has no arguments._
 #### See also
 
 * [core.print_stacktrace](#coreprint_stacktrace)
+
+### core.print_die_fn()
+
+(DEPRECATED) Print a error message to standard error including the function name
+of the callee to standard error and die
+
+#### Arguments
+
+* **$1** (string): message
+
+### core.print_die()
+
+(DEPRECATED) Print a error message to standard error and die
+
+#### Arguments
+
+* **$1** (string): message
 
