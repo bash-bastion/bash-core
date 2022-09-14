@@ -235,7 +235,7 @@ core.panic() {
 	fi
 
 	if core.err_exists; then
-		printf '%s\n' 'Error found:'
+		printf '%s\n' 'Error found:' >&2
 		printf '%s\n' "  ERRCODE: $ERRCODE" >&2
 		printf '%s\n' "  ERR: $ERR" >&2
 	fi
