@@ -380,6 +380,17 @@ core.print_debug() {
 	fi
 }
 
+core.ifs_save() {
+	local new_ifs="$1"
+
+	___global_ifs_variable_saved___=$IFS
+	IFS=$new_ifs
+}
+
+core.ifs_restore() {
+	IFS=$___global_ifs_variable_saved___
+}
+
 # @description (DEPRECATED). Determine if color should be printed. Note that this doesn't
 # use tput because simple environment variable checking heuristics suffice. Deprecated because this code
 # has been moved to bash-std
