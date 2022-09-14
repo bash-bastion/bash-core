@@ -14,9 +14,7 @@
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
-	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.private.util.init
-	fi
+	core.private.util.init
 	local function="$1"
 
 	core.private.util.validate_args "$function" $#
@@ -57,9 +55,7 @@ core.trap_add() {
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
-	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.private.util.init
-	fi
+	core.private.util.init
 	local function="$1"
 
 	core.private.util.validate_args "$function" $#
@@ -106,9 +102,7 @@ core.trap_remove() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_push() {
-	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.private.util.init
-	fi
+	core.private.util.init
 	local shopt_action="$1"
 	local shopt_name="$2"
 
@@ -153,9 +147,7 @@ core.shopt_push() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_pop() {
-	if ! [ ${___global_bash_core_has_init__+x} ]; then
-		core.private.util.init
-	fi
+	core.private.util.init
 
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
 		core.panic 'Unable to pop as nothing is in the shopt stack'
