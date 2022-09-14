@@ -235,8 +235,11 @@ core.panic() {
 	fi
 
 	if core.err_exists; then
-		core.private.util.err_print
+		printf '%s\n' 'Error found:'
+		printf '%s\n' "  ERRCODE: $ERRCODE" >&2
+		printf '%s\n' "  ERR: $ERR" >&2
 	fi
+
 	core.print_stacktrace
 	exit "$code"
 }
