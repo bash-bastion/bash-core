@@ -14,23 +14,23 @@
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_add() {
-	core.private.util.init
+	core._util.init
 	local function="$1"
 
-	core.private.util.validate_args "$function" $#
+	core._util.validate_args "$function" $#
 	local signal_spec=
 	for signal_spec in "${@:2}"; do
-		core.private.util.validate_signal "$function" "$signal_spec"
+		core._util.validate_signal "$function" "$signal_spec"
 
 		___global_trap_table___["$signal_spec"]="${___global_trap_table___[$signal_spec]}"$'\x1C'"$function"
 
 		# rho (WET)
 		local global_trap_handler_name=
-		printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
+		printf -v global_trap_handler_name '%q' "core._trap_handler_${signal_spec}"
 
 		if ! eval "$global_trap_handler_name() {
 		local ___exit_code_original=\$?
-		if core.private.util.trap_handler_common '$signal_spec' \"\$___exit_code_original\"; then
+		if core._util.trap_handler_common '$signal_spec' \"\$___exit_code_original\"; then
 			return \$___exit_code_original
 		else
 			local ___exit_code_user=\$?
@@ -55,13 +55,13 @@ core.trap_add() {
 #   kill -USR1 $$
 #   core.trap_remove 'some_handler' 'USR1'
 core.trap_remove() {
-	core.private.util.init
+	core._util.init
 	local function="$1"
 
-	core.private.util.validate_args "$function" $#
+	core._util.validate_args "$function" $#
 	local signal_spec=
 	for signal_spec in "${@:2}"; do
-		core.private.util.validate_signal "$function" "$signal_spec"
+		core._util.validate_signal "$function" "$signal_spec"
 
 		local -a trap_handlers=()
 		local new_trap_handlers=
@@ -85,7 +85,7 @@ core.trap_remove() {
 		if [ -z "$new_trap_handlers" ]; then
 			# rho (WET)
 			local global_trap_handler_name=
-			printf -v global_trap_handler_name '%q' "core.private.trap_handler_${signal_spec}"
+			printf -v global_trap_handler_name '%q' "core._trap_handler_${signal_spec}"
 			trap -- "$signal_spec"
 			unset -f "$global_trap_handler_name"
 		fi
@@ -102,7 +102,7 @@ core.trap_remove() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_push() {
-	core.private.util.init
+	core._util.init
 	local shopt_action="$1"
 	local shopt_name="$2"
 
@@ -147,7 +147,7 @@ core.shopt_push() {
 #   [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 #   core.shopt_pop
 core.shopt_pop() {
-	core.private.util.init
+	core._util.init
 
 	if (( ${#___global_shopt_stack___[@]} == 0 )); then
 		core.panic 'Unable to pop as nothing is in the shopt stack'
@@ -219,7 +219,7 @@ core.panic() {
 		if [ -n "$2" ]; then
 			code=$2
 		fi
-		if core.private.should_print_color 2; then
+		if core._should_print_color 2; then
 			printf "\033[1;31m\033[4m%s:\033[0m %s\n" 'Panic' "$1" >&2
 		else
 			printf "%s: %s\n" 'Panic' "$1" >&2
@@ -329,7 +329,7 @@ core.print_debug_fn() {
 core.print_fatal() {
 	local msg="$1"
 
-	if core.private.should_print_color 2; then
+	if core._should_print_color 2; then
 		printf "\033[1;35m%s:\033[0m %s\n" 'Fatal' "$msg" >&2
 	else
 		printf "%s: %s\n" 'Fatal' "$msg" >&2
@@ -341,7 +341,7 @@ core.print_fatal() {
 core.print_error() {
 	local msg="$1"
 
-	if core.private.should_print_color 2; then
+	if core._should_print_color 2; then
 		printf "\033[1;31m%s:\033[0m %s\n" 'Error' "$msg" >&2
 	else
 		printf "%s: %s\n" 'Error' "$msg" >&2
@@ -353,7 +353,7 @@ core.print_error() {
 core.print_warn() {
 	local msg="$1"
 
-	if core.private.should_print_color 2; then
+	if core._should_print_color 2; then
 		printf "\033[1;33m%s:\033[0m %s\n" 'Warn' "$msg" >&2
 	else
 		printf "%s: %s\n" 'Warn' "$msg" >&2
@@ -365,7 +365,7 @@ core.print_warn() {
 core.print_info() {
 	local msg="$1"
 
-	if core.private.should_print_color 1; then
+	if core._should_print_color 1; then
 		printf "\033[1;32m%s:\033[0m %s\n" 'Info' "$msg"
 	else
 		printf "%s: %s\n" 'Info' "$msg"
@@ -395,7 +395,7 @@ core.ifs_restore() {
 # use tput because simple environment variable checking heuristics suffice. Deprecated because this code
 # has been moved to bash-std
 core.should_output_color() {
-	if core.private.should_print_color "$@"; then :; else
+	if core._should_print_color "$@"; then :; else
 		return $?
 	fi
 }
@@ -428,7 +428,7 @@ core.get_package_info() {
 # this function is called automatically by functions that use global variables
 # @noargs
 core.init() {
-	core.private.util.init
+	core._util.init
 }
 
 # @description (DEPRECATED) Prints stacktrace

@@ -2,7 +2,7 @@
 
 # @description Initialize global variables required for shopt and trap functions
 # @internal
-core.private.util.init() {
+core._util.init() {
 	if [ ${___global_bash_core_has_init__+x} ]; then
 		return
 	fi
@@ -14,7 +14,7 @@ core.private.util.init() {
 
 # @description Function that runs handlers for a particular signal
 # @internal
-core.private.util.trap_handler_common() {
+core._util.trap_handler_common() {
 	local signal_spec="$1"
 	local code="$2"
 
@@ -38,7 +38,7 @@ core.private.util.trap_handler_common() {
 }
 
 # @internal
-core.private.util.validate_args() {
+core._util.validate_args() {
 	local function="$1"
 	local arg_count="$2"
 
@@ -52,7 +52,7 @@ core.private.util.validate_args() {
 }
 
 # @internal
-core.private.util.validate_signal() {
+core._util.validate_signal() {
 	local function="$1"
 	local signal_spec="$2"
 
@@ -73,7 +73,7 @@ core.private.util.validate_signal() {
 # @description Determine if should print color, given a file descriptor
 # @arg 1 File descriptor for terminal check
 # @internal
-core.private.should_print_color() {
+core._should_print_color() {
 	local fd="$1"
 	
 	if [ ${NO_COLOR+x} ]; then
