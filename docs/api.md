@@ -10,9 +10,6 @@ Core functions for any Bash program
 * [core.trap_remove](#coretrap_remove)
 * [core.shopt_push](#coreshopt_push)
 * [core.shopt_pop](#coreshopt_pop)
-* [core.err_set](#coreerr_set)
-* [core.err_clear](#coreerr_clear)
-* [core.err_exists](#coreerr_exists)
 * [core.panic](#corepanic)
 * [core.print_stacktrace](#coreprint_stacktrace)
 * [core.print_fatal_fn](#coreprint_fatal_fn)
@@ -25,6 +22,9 @@ Core functions for any Bash program
 * [core.print_warn](#coreprint_warn)
 * [core.print_info](#coreprint_info)
 * [core.print_debug](#coreprint_debug)
+* [core.err_set](#coreerr_set)
+* [core.err_clear](#coreerr_clear)
+* [core.err_exists](#coreerr_exists)
 * [core.should_output_color](#coreshould_output_color)
 * [core.get_package_info](#coreget_package_info)
 * [core.init](#coreinit)
@@ -101,39 +101,6 @@ core.shopt_push -s extglob
 [[ 'variable' == @(foxtrot|golf|echo|variable) ]] && printf '%s\n' 'Woof!'
 core.shopt_pop
 ```
-
-_Function has no arguments._
-
-### core.err_set
-
-Sets an error.
-
-#### Arguments
-
-* **$1** (Error): code
-* **$2** (Error): message
-
-#### Variables set
-
-* **number** (ERRCODE): Error code
-* **string** (ERR): Error message
-
-### core.err_clear
-
-Clears any of the global error state (sets to empty string).
-This means any `core.err_exists` calls after this _will_ `return 1`
-
-_Function has no arguments._
-
-#### Variables set
-
-* **number** (ERRCODE): Error code
-* **string** (ERR): Error message
-
-### core.err_exists
-
-Checks if an error exists. If `ERR` is not empty, then an error
-_does_ exist
 
 _Function has no arguments._
 
@@ -244,6 +211,39 @@ Print a debug message to standard output if the environment variable "DEBUG" is 
 #### Arguments
 
 * **$1** (string): message
+
+### core.err_set
+
+(DEPRECATED) Sets an error.
+
+#### Arguments
+
+* **$1** (Error): code
+* **$2** (Error): message
+
+#### Variables set
+
+* **number** (ERRCODE): Error code
+* **string** (ERR): Error message
+
+### core.err_clear
+
+(DEPRECATED) Clears any of the global error state (sets to empty string).
+This means any `core.err_exists` calls after this _will_ `return 1`
+
+_Function has no arguments._
+
+#### Variables set
+
+* **number** (ERRCODE): Error code
+* **string** (ERR): Error message
+
+### core.err_exists
+
+(DEPRECATED) Checks if an error exists. If `ERR` is not empty, then an error
+_does_ exist
+
+_Function has no arguments._
 
 ### core.should_output_color
 

@@ -168,48 +168,6 @@ core.shopt_pop() {
 	___global_shopt_stack___=("${___global_shopt_stack___[@]::${#___global_shopt_stack___[@]}-2}")
 }
 
-# @description Sets an error.
-# @arg $1 Error code
-# @arg $2 Error message
-# @set number ERRCODE Error code
-# @set string ERR Error message
-core.err_set() {
-	if (($# == 1)); then
-		ERRCODE=1
-		ERR=$1
-	elif (($# == 2)); then
-		ERRCODE=$1
-		ERR=$2
-	else
-		core.panic 'Incorrect function arguments'
-	fi
-
-	if [ -z "$ERR" ]; then
-		core.panic "Argument for 'ERR' cannot be empty"
-	fi
-}
-
-# @description Clears any of the global error state (sets to empty string).
-# This means any `core.err_exists` calls after this _will_ `return 1`
-# @noargs
-# @set number ERRCODE Error code
-# @set string ERR Error message
-core.err_clear() {
-	ERRCODE=
-	ERR=
-}
-
-# @description Checks if an error exists. If `ERR` is not empty, then an error
-# _does_ exist
-# @noargs
-core.err_exists() {
-	if [ -z "$ERR" ]; then
-		return 1
-	else
-		return 0
-	fi
-}
-
 # @description Use when a serious fault occurs. It will print the current ERR (if it exists)
 core.panic() {
 	local code='1'
@@ -389,6 +347,48 @@ core.ifs_save() {
 
 core.ifs_restore() {
 	IFS=$___global_ifs_variable_saved___
+}
+
+# @description (DEPRECATED) Sets an error.
+# @arg $1 Error code
+# @arg $2 Error message
+# @set number ERRCODE Error code
+# @set string ERR Error message
+core.err_set() {
+	if (($# == 1)); then
+		ERRCODE=1
+		ERR=$1
+	elif (($# == 2)); then
+		ERRCODE=$1
+		ERR=$2
+	else
+		core.panic 'Incorrect function arguments'
+	fi
+
+	if [ -z "$ERR" ]; then
+		core.panic "Argument for 'ERR' cannot be empty"
+	fi
+}
+
+# @description (DEPRECATED) Clears any of the global error state (sets to empty string).
+# This means any `core.err_exists` calls after this _will_ `return 1`
+# @noargs
+# @set number ERRCODE Error code
+# @set string ERR Error message
+core.err_clear() {
+	ERRCODE=
+	ERR=
+}
+
+# @description (DEPRECATED) Checks if an error exists. If `ERR` is not empty, then an error
+# _does_ exist
+# @noargs
+core.err_exists() {
+	if [ -z "$ERR" ]; then
+		return 1
+	else
+		return 0
+	fi
 }
 
 # @description (DEPRECATED). Determine if color should be printed. Note that this doesn't
