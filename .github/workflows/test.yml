@@ -1,0 +1,150 @@
+name: 'Test'
+
+on:
+  push:
+    branches-ignore: ['*-no-ci']
+  pull_request:
+    branches-ignore: ['*-no-ci']
+
+permissions: 'read-all'
+
+defaults:
+  run:
+    shell: 'bash'
+
+# TODO
+# concurrency:
+#   group: '${{ github.ref }}'
+#   cancel-in-progress: true
+
+jobs:
+  test:
+    name: 'Test Linux'
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu-latest']
+        images:
+          - 'debian:10'
+          - 'debian:11'
+          - 'debian:12'
+          - 'ubuntu:20.04'
+          - 'ubuntu:22.04'
+          - 'fedora:37'
+          - 'fedora:38'
+          # - 'opensuse/leap:15.4'
+          # - 'opensuse/leap:15.5'
+          # - 'opensuse/tumbleweed:latest' # TODO
+          - 'archlinux:latest'
+    container:
+      image: '${{ matrix.images }}'
+    steps:
+      - uses: 'step-security/harden-runner@v2' # TODO, step-security/secure-repo
+        with:
+          egress-policy: audit
+      - name: 'Install Dependencies'
+        run: |
+          if command -v apt-get >/dev/null 2>&1; then
+            DEBIAN_FRONTEND=noninteractive apt-get update -y
+            DEBIAN_FRONTEND=noninteractive apt-get install -y curl git
+          elif command -v dnf >/dev/null 2>&1; then
+            dnf update -y
+            dnf install -y curl git
+          elif command -v zypper >/dev/null 2>&1; then
+            zypper update -y
+            zypper install -y tar curl git bash
+          elif command -v pacman >/dev/null 2>&1; then
+            pacman -Syu --noconfirm curl git
+          fi
+      - name: 'Install Basalt'
+        run: |
+          git clone https://github.com/hyperupcall/basalt "${XDG_DATA_HOME:-$HOME/.local/share}/basalt/source"
+          PATH="${XDG_DATA_HOME:-$HOME/.local/share}/basalt/source/pkg/bin:$PATH"
+
+          mkdir -p /basalt
+          printf '%s\n' "${{ github.token }}" > /basalt/token
+
+          eval "$(basalt global init bash)"
+          (
+            cd "${XDG_DATA_HOME:-$HOME/.local/share}/basalt/source"
+            basalt install
+          )
+
+          printf '%s\n' "${XDG_DATA_HOME:-$HOME/.local/share}/basalt/source/pkg/bin" >> "$GITHUB_PATH"
+      - name: 'Install Bats'
+        run: |
+          subdir="$HOME/.tools"
+          bats_version='1.4.1'
+
+          mkdir -p "$subdir"
+          curl -LsSo "$subdir/bats-core.tar.gz" --create-dirs \
+            https://github.com/bats-core/bats-core/archive/v$bats_version.tar.gz
+          tar --extract --transform "s,bats-core-$bats_version,bats-core," -C "$subdir" -f "$subdir/bats-core.tar.gz"
+          ls -al "$subdir/bats-core/bin"
+          echo i am pwd: "$PWD"
+          printf '%s\n' "$subdir/bats-core/bin" >> "$GITHUB_PATH"
+      - uses: 'actions/checkout@v3'
+      - name: 'Run Test'
+        run: |
+          git config --global user.email "user@example.com"
+          git config --global user.name "User Name"
+
+          bash --version
+          eval "$(basalt global init bash)"
+          basalt install
+          sleep 10
+          touch .basalt/generated/done.sh
+          time bats --tap tests
+  # test-bats:
+  #   name: 'Test Bash versions'
+  #   runs-on: 'ubuntu-latest'
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       bash-version: ['4.3', '4.4', '5.0', '5.1', 'latest']
+  #   steps:
+  #     - run: echo 'thing'
+
+# test-mac:
+#   name: 'MacOS Test'
+#   strategy:
+#     fail-fast: false
+#     matrix:
+#       os: ['macos-latest']
+#   runs-on: '${{ matrix.os }}'
+
+#   steps:
+#     - uses: 'actions/checkout@v2'
+#       with:
+#         submodules: true
+#         path: 'source'
+
+#     - name: Install Prerequisites
+#       run: |
+#         # gnu-tar is only for the 'Install Bats' step
+#         brew install bash coreutils curl gnu-tar
+
+#     - name: Install Bats
+#       run: |
+#         subdir='.workflow-data'
+#         bats_version='1.4.1'
+
+#         cd source
+
+#         curl -LsSo "$subdir/bats-core.tar.gz" --create-dirs \
+#           https://github.com/bats-core/bats-core/archive/v$bats_version.tar.gz
+#         gtar --extract --transform "s,bats-core-$bats_version,bats-core," -C "$subdir" -f "$subdir/bats-core.tar.gz"
+
+#     - name: Run tests
+#       run: |
+#         subdir='.workflow-data'
+
+#         cd source
+
+#         bash --version
+#         git config --global user.email "user@example.com"
+#         git config --global user.name "User Name"
+#         printf "%s\n" "---"
+
+#         time "./$subdir/bats-core/bin/bats" --tap tests
