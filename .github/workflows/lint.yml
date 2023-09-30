@@ -1,4 +1,4 @@
-name: 'Test'
+name: 'Lint'
 
 on:
   push:
@@ -13,4 +13,4 @@ permissions:
 jobs:
   bash:
     name: 'Bash'
-    uses: 'fox-land/hyperupcall-action/.github/workflows/bash-test.yml@main'
+    uses: 'fox-land/hyperupcall-action/.github/workflows/bash-lint.yml@main'
