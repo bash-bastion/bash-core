@@ -43,11 +43,11 @@ Following is a `core.print_stacktrace` example:
 
 ```txt
 Stacktrace:
-  in core.stacktrace_print (/home/edwin/repos/bash-core/.hidden/test.sh:0)
-  in err_handler (/home/edwin/repos/bash-core/.hidden/test.sh:36)
-  in fn3 (/home/edwin/repos/bash-core/.hidden/test.sh:48)
-  in fn2 (/home/edwin/repos/bash-core/.hidden/test.sh:53)
-  in fn (/home/edwin/repos/bash-core/.hidden/test.sh:57)
+  in core.stacktrace_print (/tmp/test.sh:0)
+  in err_handler (/tmp/test.sh:36)
+  in fn3 (/tmp/test.sh:48)
+  in fn2 (/tmp/test.sh:53)
+  in fn (/tmp/test.sh:57)
 ```
 
 ## Installation
