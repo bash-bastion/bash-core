@@ -19,7 +19,13 @@ core._util.trap_handler_common() {
 	local code="$2"
 
 	local trap_handlers=
-	IFS=$'\x1C' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
+	if [ -n "$BASH_VERSION" ]; then
+		IFS=$'\x1C' read -ra trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
+	elif [ -n "$ZSH_VERSION" ]; then
+		IFS=$'\x1C' read -rA trap_handlers <<< "${___global_trap_table___[$signal_spec]}"
+	else
+		core.panic 'bash-core only supports bash and zsh'
+	fi
 
 	local trap_handler=
 	for trap_handler in "${trap_handlers[@]}"; do
@@ -75,7 +81,7 @@ core._util.validate_signal() {
 # @internal
 core._should_print_color() {
 	local fd="$1"
-	
+
 	if [ ${NO_COLOR+x} ]; then
 		return 1
 	fi
