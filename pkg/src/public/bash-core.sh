@@ -200,7 +200,7 @@ core.panic() {
 #  err_handler() {
 #    local exit_code=$1 # Note that this isn't `$?`
 #    core.print_stacktrace
-#    
+#
 #    # Note that we're not doing `exit $exit_code` because
 #    # that is handled automatically
 #  }
@@ -333,6 +333,8 @@ core.print_info() {
 # @description Print a debug message to standard output if the environment variable "DEBUG" is present
 # @arg $1 string message
 core.print_debug() {
+	local msg="$1"
+
 	if [[ -v DEBUG ]]; then
 		printf "%s: %s\n" 'Debug' "$msg"
 	fi
@@ -408,7 +410,7 @@ core.get_package_info() {
 	unset REPLY; REPLY=
 	local basalt_package_dir="$1"
 	local key_name="$2"
-	
+
 	local toml_file="$basalt_package_dir/basalt.toml"
 
 	if [ ! -f "$toml_file" ]; then
