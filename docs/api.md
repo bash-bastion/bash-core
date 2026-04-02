@@ -34,7 +34,7 @@ Core functions for any Bash program
 
 ### core.trap_add
 
-Adds a handler for a particular `trap` signal or event. Noticably,
+Adds a handler for a particular `trap` signal or event. Noticeably,
 unlike the 'builtin' trap, this does not override any other existing handlers. The first argument
 to the handler is the exit code of the last command that ran before the particular 'trap'
 
@@ -49,7 +49,7 @@ core.trap_remove 'some_handler' 'USR1'
 
 #### Arguments
 
-* **$1** (string): Function to execute on an event. Integers are forbiden
+* **$1** (string): Function to execute on an event. Integers are forbidden
 * **$2** (string): Event signal
 
 ### core.trap_remove
@@ -118,7 +118,7 @@ Prints stacktrace
 err_handler() {
   local exit_code=$1 # Note that this isn't `$?`
   core.print_stacktrace
-  
+
   # Note that we're not doing `exit $exit_code` because
   # that is handled automatically
 }
@@ -295,4 +295,3 @@ of the callee to standard error and die
 #### Arguments
 
 * **$1** (string): message
-

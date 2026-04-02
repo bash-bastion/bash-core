@@ -2,7 +2,7 @@
 
 load './util/init.sh'
 
-@test "core.shotpt_push works" {
+@test "core.shopt_push works" {
 	shopt -u extglob
 
 	core.shopt_push -s extglob

@@ -10,7 +10,7 @@ load './util/init.sh'
 # ___global_trap_table___ is an associative array. If that variable is not an associative
 # array, indexing with 'nokey' still yields the value of the (string) variable (no error
 # will be thrown). Now that 'core.init' is automatically called when the array is not
-# defined (to be an associative array), these checks are unecessary (yet, they still exist)
+# defined (to be an associative array), these checks are unnecessary (yet, they still exist)
 
 @test "core.trap_add fails when function is not supplied" {
 	run core.trap_add '' 'USR1'
@@ -20,7 +20,7 @@ load './util/init.sh'
 }
 
 @test "core.trap_add fails when signal is not supplied" {
-	run core.trap_add 'function' 
+	run core.trap_add 'function'
 
 	assert_failure
 	assert_output -p "Must specify at least one signal"
@@ -51,7 +51,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	core.trap_add 'somefunction' 'USR1'
 	kill -USR1 \$\$"
@@ -72,7 +72,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	somefunction2() { printf '%s\n' 'b'; }
 	core.trap_add 'somefunction' 'USR1'
@@ -93,11 +93,11 @@ load './util/init.sh'
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction\x1Csomefunction2' ]
 }
 
-@test "core.trap_add adds function properly 3" {	
+@test "core.trap_add adds function properly 3" {
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	core.trap_add 'somefunction' 'USR1' 'USR2'
 	kill -USR1 \$\$
@@ -110,7 +110,7 @@ load './util/init.sh'
 @test "core.trap_add adds function properly 3 (variable)" {
 	somefunction() { :; }
 	core.trap_add 'somefunction' 'USR1' 'USR2'
-	
+
 	[ "${___global_trap_table___[nokey]}" != $'\x1Csomefunction' ]
 	[ "${___global_trap_table___[USR1]}" = $'\x1Csomefunction' ]
 	[ "${___global_trap_table___[USR2]}" = $'\x1Csomefunction' ]
@@ -124,7 +124,7 @@ load './util/init.sh'
 }
 
 @test "core.trap_remove fails when signal is not supplied" {
-	run core.trap_remove 'function' 
+	run core.trap_remove 'function'
 
 	assert_failure
 	assert_output -p "Must specify at least one signal"
@@ -148,7 +148,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	core.trap_add 'somefunction' 'USR1'
 	core.trap_remove 'somefunction' 'USR1'
@@ -171,7 +171,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	somefunction2() { printf '%s\n' 'b'; }
 	core.trap_add 'somefunction' 'USR1'
@@ -198,7 +198,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	somefunction2() { printf '%s\n' 'b'; }
 	core.trap_add 'somefunction' 'USR1'
@@ -226,7 +226,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\" || { printf '%s\n' 'Failed to cd'; exit 1; }
 	source ./util/init.sh
-	
+
 	somefunction() { printf '%s\n' 'a'; }
 	somefunction2() { printf '%s\n' 'b'; }
 	core.trap_add 'somefunction' 'USR1'
@@ -253,7 +253,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\"
 	source ./util/init.sh
-	
+
 	somefunction() { return 33; }
 	core.trap_add 'somefunction' 'USR1'
 	kill -USR1 \$\$
@@ -267,7 +267,7 @@ load './util/init.sh'
 	BASALT_PACKAGE_DIR=$BASALT_PACKAGE_DIR run bash -c "
 	cd \"\$BASALT_PACKAGE_DIR/tests\"
 	source ./util/init.sh
-	
+
 	somefunction() { return 33; }
 	core.trap_add 'somefunction' 'USR1'
 	unset -f somefunction

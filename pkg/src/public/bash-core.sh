@@ -3,10 +3,10 @@
 # @name bash-core
 # @description Core functions for any Bash program
 
-# @description Adds a handler for a particular `trap` signal or event. Noticably,
+# @description Adds a handler for a particular `trap` signal or event. Noticeably,
 # unlike the 'builtin' trap, this does not override any other existing handlers. The first argument
 # to the handler is the exit code of the last command that ran before the particular 'trap'
-# @arg $1 string Function to execute on an event. Integers are forbiden
+# @arg $1 string Function to execute on an event. Integers are forbidden
 # @arg $2 string Event signal
 # @example
 #   some_handler() { printf '%s\n' 'This was called on USR1! ^w^'; }
